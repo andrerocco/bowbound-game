@@ -4,7 +4,7 @@ from math import pi, atan2
 
 class Bow():
     def __init__(self, initial_position):
-        self.image = pygame.image.load('./prototipo/gun.png').convert() # Carrega a imagem do arco (que tem fundo preto)
+        self.image = pygame.image.load('./gun.png').convert() # Carrega a imagem do arco (que tem fundo preto)
         self.image.set_colorkey((0,0,0)) # Define a cor preta como transparente
         self.image = pygame.transform.scale(self.image, (58, 8)) # Redimensiona a imagem do arco
 
