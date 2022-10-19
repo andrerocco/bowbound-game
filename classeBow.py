@@ -20,4 +20,3 @@ class Bow():
         rotated_image = pygame.transform.rotate(self.image, angle_degrees) # Faz uma cópia da imagem rotacionada
 
         return rotated_image
-
