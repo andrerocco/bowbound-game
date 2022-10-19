@@ -98,11 +98,6 @@ class Player(pygame.sprite.Sprite):
         self.speed = -(direction * self.knockback_strength)
 
     def calculate_speed(self, event_listener):
-        # Se o jogador atirar uma flecha e tiver flechas disponíveis
-        for event in event_listener:
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                self.knockback(pygame.mouse.get_pos())
-
         # Aplica a aceleração do input
         self.movement_input() # Muda os valores de aceleração
         self.apply_accceleration() # Aplica a aceleração ao vetor de velocidade
