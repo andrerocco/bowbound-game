@@ -9,7 +9,7 @@ class Arrow():
 
         # Atributos de características da flecha
         self.speed = 12
-        self.gravity = 0.2
+        self.gravity = 0
 
     # Quando for atirada, inicia os atributos usados para o seu movimento
     def start_shot(self, initial_position: tuple, target_position: tuple):

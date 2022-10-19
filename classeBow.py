@@ -11,7 +11,7 @@ class Bow():
         self.rect = self.image.get_rect(center=initial_position)
 
         # Flechas
-        self.arrows = [Arrow(), Arrow()]
+        self.arrows = [Arrow(), Arrow(), Arrow(), Arrow(), Arrow(), Arrow()]
         
     
     def get_rotated_image(self, player_position):
