@@ -1,5 +1,3 @@
-from turtle import screensize
-
 levels = [{
     'level_number': 1,
     'level_name': 'Level 1',
