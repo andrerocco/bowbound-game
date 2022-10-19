@@ -3,6 +3,7 @@ import pygame
 import config
 from classeTile import Tile
 from classePlayer import Player
+from classeArrow import Arrow
 
 class Level:
     def __init__(self, level_data: dict, surface):
@@ -20,8 +21,11 @@ class Level:
         self.level_tiles = pygame.sprite.Group() 
         self.generate_level(self.level_map_matrix)
 
-        
-    def generate_level(self, level_map_matrix): # Gera o mapa baseado no nível (baseado no argumento level_map recebido na construtora)
+        # Flechas
+        self.arrows = []
+
+    # Gera o mapa baseado no nível (baseado no argumento level_map recebido na construtora)
+    def generate_level(self, level_map_matrix):
         tile_size = config.level_tile_size
 
         for row_index, row in enumerate(level_map_matrix):
@@ -73,7 +77,6 @@ class Level:
 
         return (dx, dy) # Retorna as posições colididas com o sprite group passado como argumento
 
-
     def display_bow(self, player_position):
         player_x, player_y = player_position
         bow_x = player_x
@@ -83,6 +86,18 @@ class Level:
         rotated_bow_rect = rotated_bow_image.get_rect(center = (bow_x , bow_y))
 
         self.display_surface.blit(rotated_bow_image, rotated_bow_rect)
+
+    def player_shoot(self):
+        try: # Tenta pegar uma flecha do arco (irá suceder se o arco tiver flechas)
+            arrow = self.player.sprite.bow.pop_first_arrow()
+        except: # Caso o jogador não tenha uma flecha no arco, ele não poderá atirar
+            # Fazer efeito sonoro ou algo do gênero
+            pass
+        else: # Caso o try tenha sucedido
+            player_center = self.player.sprite.rect.center
+            target_position = pygame.mouse.get_pos()
+            arrow.start_shot(player_center, target_position)
+            self.arrows.append(arrow)
 
     def run(self, event_listener):
         player = self.player.sprite
@@ -95,6 +110,14 @@ class Level:
         
         # Aplica o deslocamento final no jogador
         player.update(collided_delta_speed)
+
+        # Updates das flechas
+        for event in event_listener:
+            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1: # Se o botão esquerdo do mouse for pressionado
+                self.player_shoot() # Tenta atirar uma flecha
+                print(self.arrows)
+        for arrow in self.arrows:
+            arrow.update()
 
         # Draw
         self.player.draw(self.display_surface)
