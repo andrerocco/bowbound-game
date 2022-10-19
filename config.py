@@ -1,8 +1,9 @@
 from turtle import screensize
 
-
-levels = {
-    1 : [
+levels = [{
+    'level_number': 1,
+    'level_name': 'Level 1',
+    'tile_map': [
 'XXXXXXXXXXXXXXXXXXXXXXXXX',
 'X                X      X',
 'X                X      X',
@@ -13,9 +14,12 @@ levels = {
 'X        X              X',
 'X        X              X',
 'X   P    X              X',
-'XXXXXXXXXXXXXXXXXXXXXXXXX'
-    ],
-    2 : [
+'XXXXXXXXXXXXXXXXXXXXXXXXX']
+},
+{
+    'level_number': 2,
+    'level_name': 'Level 2',
+    'tile_map': [
 '                         ',
 '                         ',
 '                         ',
@@ -26,9 +30,8 @@ levels = {
 '    X      X        X    ',
 '     X             X     ',
 ' XX         P         XX ',
-'XXXXXXXXXXXXXXXXXXXXXXXXX'
-    ]
-}
+'XXXXXXXXXXXXXXXXXXXXXXXXX']
+}]
 
 level_tile_size = 48 # Definir tamanho de cada bloco em pixels
 
