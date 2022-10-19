@@ -87,17 +87,21 @@ class Level:
 
         self.display_surface.blit(rotated_bow_image, rotated_bow_rect)
 
-    def player_shoot(self):
+    def player_shoot(self, player: Player):
         try: # Tenta pegar uma flecha do arco (irá suceder se o arco tiver flechas)
             arrow = self.player.sprite.bow.pop_first_arrow()
+        
         except: # Caso o jogador não tenha uma flecha no arco, ele não poderá atirar
             # Fazer efeito sonoro ou algo do gênero
             pass
+        
         else: # Caso o try tenha sucedido
-            player_center = self.player.sprite.rect.center
-            target_position = pygame.mouse.get_pos()
-            arrow.start_shot(player_center, target_position)
-            self.arrows.append(arrow)
+            target_position = pygame.mouse.get_pos() # Pega a posição do mouse
+
+            arrow.start_shot(player.rect.center, target_position) # Inicializa os atributos de posição da flecha
+            self.arrows.append(arrow) # Adiciona a flecha na lista de flechas do level
+
+            player.knockback(target_position) # Aplica o knockback no jogador
 
     def run(self, event_listener):
         player = self.player.sprite
@@ -114,10 +118,10 @@ class Level:
         # Updates das flechas
         for event in event_listener:
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1: # Se o botão esquerdo do mouse for pressionado
-                self.player_shoot() # Tenta atirar uma flecha
-                print(self.arrows)
+                self.player_shoot(player) # Tenta atirar uma flecha
         for arrow in self.arrows:
             arrow.update()
+            self.display_surface.blit(arrow.image, arrow.rect)
 
         # Draw
         self.player.draw(self.display_surface)
