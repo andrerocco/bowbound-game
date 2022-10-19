@@ -12,8 +12,8 @@ screen_height = 600
 screen = pygame.display.set_mode((screen_width, screen_height), pygame.RESIZABLE)
 
 # Nível
-current_level_map = config.levels[1]
-level = Level(current_level_map, screen) # Passa a matriz que representa o nível e a superfície onde o nível será desenhado
+current_level = config.levels[0]
+level = Level(current_level, screen) # Passa a matriz que representa o nível e a superfície onde o nível será desenhado
 
 while True:
     event_listener = pygame.event.get()

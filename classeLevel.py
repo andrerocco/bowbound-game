@@ -5,7 +5,11 @@ from classeTile import Tile
 from classePlayer import Player
 
 class Level:
-    def __init__(self, level_map, surface):
+    def __init__(self, level_data: dict, surface):
+        self.level_number = level_data['level_number']
+        self.level_name = level_data['level_name']
+        self.level_map_matrix = level_data['tile_map']
+
         # Superfície onde o nível será desenhado
         self.display_surface = surface
 
@@ -14,7 +18,7 @@ class Level:
 
         # Agrupa todas as superfícies do nível atual geradas por generate_level()
         self.level_tiles = pygame.sprite.Group() 
-        self.generate_level(level_map)
+        self.generate_level(self.level_map_matrix)
 
         
     def generate_level(self, level_map_matrix): # Gera o mapa baseado no nível (baseado no argumento level_map recebido na construtora)
