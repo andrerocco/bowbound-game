@@ -8,11 +8,16 @@ class Arrow():
         self.base_image = pygame.image.load('./arrow.png').convert()
 
         # Atributos de características da flecha
-        self.speed = 12
+        self.minimun_speed = 10
+        self.maximun_extra_speed = 15
         self.gravity = 0.2
 
     # Quando for atirada, inicia os atributos usados para o seu movimento
-    def start_shot(self, initial_position: tuple, target_position: tuple, force):
+    def start_shot(self, initial_position: tuple, target_position: tuple, hold_factor: float):
+        # Velocidade da flecha depende do tempo que o jogador segurou o mouse
+        self.speed = self.minimun_speed + (self.maximun_extra_speed * hold_factor)
+        print(self.speed)
+
         # Atributos de posição
         angle_radian = atan2(target_position[1] - initial_position[1], target_position[0] - initial_position[0]) # Define o ângulo em radianos
         self.delta_position = pygame.Vector2((cos(angle_radian) * self.speed), (sin(angle_radian) * self.speed))
@@ -27,9 +32,6 @@ class Arrow():
         # Posição x e y da flecha (quer será atualizada para float apartir de dx e dy)
         self.x_pos = self.rect.x
         self.y_pos = self.rect.y
-
-        # Gravidade da flecha atirada que depende da força (force vai de 1 a 100)
-        #self.gravity = 12*(force/60)
 
     def move(self):
         # Aplica a gravidade no self.dy
