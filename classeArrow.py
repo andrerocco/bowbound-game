@@ -5,14 +5,19 @@ from math import atan2, sin, cos, pi
 class Arrow():
     def __init__(self, tipo: str = 'normal'):
         # Importa a imagem da flecha
-        self.base_image = pygame.image.load('./arrow.png')
+        self.base_image = pygame.image.load('./arrow.png').convert()
 
         # Atributos de características da flecha
-        self.speed = 12
-        self.gravity = 0
+        self.minimun_speed = 10
+        self.maximun_extra_speed = 15
+        self.gravity = 0.2
 
     # Quando for atirada, inicia os atributos usados para o seu movimento
-    def start_shot(self, initial_position: tuple, target_position: tuple):
+    def start_shot(self, initial_position: tuple, target_position: tuple, hold_factor: float):
+        # Velocidade da flecha depende do tempo que o jogador segurou o mouse
+        self.speed = self.minimun_speed + (self.maximun_extra_speed * hold_factor)
+        print(self.speed)
+
         # Atributos de posição
         angle_radian = atan2(target_position[1] - initial_position[1], target_position[0] - initial_position[0]) # Define o ângulo em radianos
         self.delta_position = pygame.Vector2((cos(angle_radian) * self.speed), (sin(angle_radian) * self.speed))

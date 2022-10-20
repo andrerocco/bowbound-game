@@ -21,7 +21,7 @@ class Player(pygame.sprite.Sprite):
         self.max_walking_speed = 5
 
         # Acelerações
-        self.gravity = 0.5
+        self.gravity = 0.45
         self.acceleration = pygame.Vector2(0, self.gravity)
         self.ground_friction = 0.75 # Desaceleração do chão em porcentagem
         self.air_friction = 0.98 # Desaceleração do ar em porcentagem
@@ -29,7 +29,7 @@ class Player(pygame.sprite.Sprite):
         # Forças
         self.input_strength = 0.6 # Altera a força do input do jogador
         self.knockback_strength = 15 # Altera a força do knockback
-        self.jump_strength = 8 # Altera a força do pulo
+        self.jump_strength = 6 # Altera a força do pulo
 
         # Atributos de input
         self.thrust = 0
@@ -87,7 +87,7 @@ class Player(pygame.sprite.Sprite):
         if not self.on_ground_status:
             self.speed.x = int(self.speed.x * self.air_friction * 1000)/1000 # Arredonda para 4 pontos de precisão
 
-    def knockback(self, target_position):
+    def knockback(self, target_position, hold_factor: float = 1):
         self.on_ground_status = False
 
         # Calcula a direção do knockback
@@ -95,7 +95,8 @@ class Player(pygame.sprite.Sprite):
         direction = direction.normalize()
 
         # Aplica o knockback
-        self.speed = -(direction * self.knockback_strength)
+        knockback_factor = self.knockback_strength * hold_factor
+        self.speed = -(direction * knockback_factor)
 
     def calculate_speed(self, event_listener):
         # Aplica a aceleração do input

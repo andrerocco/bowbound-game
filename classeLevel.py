@@ -1,6 +1,6 @@
-from turtle import position, speed
 import pygame
 import config
+from time import time
 from classeTile import Tile
 from classePlayer import Player
 from classeArrow import Arrow
@@ -100,7 +100,7 @@ class Level:
 
         self.display_surface.blit(rotated_bow_image, rotated_bow_rect)
 
-    def player_shoot(self, player: Player):
+    def player_shoot(self, player: Player, hold_factor: float):
         try: # Tenta pegar uma flecha do arco (irá suceder se o arco tiver flechas)
             arrow = self.player.sprite.bow.pop_first_arrow()
         
@@ -111,7 +111,7 @@ class Level:
         else: # Caso o try tenha sucedido
             target_position = pygame.mouse.get_pos() # Pega a posição do mouse
 
-            arrow.start_shot(player.rect.center, target_position) # Inicializa os atributos de posição da flecha
+            arrow.start_shot(player.rect.center, target_position, hold_factor) # Inicializa os atributos de posição da flecha
             self.moving_arrows.append(arrow) # Adiciona a flecha na lista de flechas do level
 
             player.knockback(target_position) # Aplica o knockback no jogador
@@ -128,13 +128,23 @@ class Level:
         # Aplica o deslocamento final no jogador
         player.update(collided_delta_speed)
 
-        """ UPDATE DAS FLECHAS ------ OTIMIZAR """
+        """ UPDATE DAS FLECHAS ------ ORGANIZAR DEPOIS """
         for event in event_listener:
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1: # Se o botão esquerdo do mouse for pressionado
-                self.player_shoot(player) # Tenta atirar uma flecha
-        
+                self.start_hold = time()
+            elif event.type == pygame.MOUSEBUTTONUP and event.button == 1: # Quando o botão esquerdo do mouse for soltado
+                end_hold = time()
+
+                self.hold_time = end_hold - self.start_hold
+                if self.hold_time >= 1:
+                    hold_factor = 1
+                else:
+                    hold_factor = self.hold_time / 1 # Vai ser um float que varia de 0 até 1
+                
+                print(hold_factor)
+                self.player_shoot(player, hold_factor)
+
         for arrow in self.moving_arrows:
-            print(self.check_collision(arrow, self.level_tiles))
             if self.check_collision(arrow, self.level_tiles):
                 self.stuck_arrows.append(self.moving_arrows.pop(self.moving_arrows.index(arrow)))
             else:
