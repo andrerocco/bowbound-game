@@ -1,4 +1,3 @@
-from turtle import position, speed
 import pygame
 import config
 from time import time
@@ -129,7 +128,7 @@ class Level:
         # Aplica o deslocamento final no jogador
         player.update(collided_delta_speed)
 
-        """ UPDATE DAS FLECHAS ------ OTIMIZAR """
+        """ UPDATE DAS FLECHAS ------ ORGANIZAR DEPOIS """
         for event in event_listener:
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1: # Se o botão esquerdo do mouse for pressionado
                 self.start_hold = time()
@@ -137,8 +136,13 @@ class Level:
                 end_hold = time()
 
                 self.hold_time = end_hold - self.start_hold
-                self.player_shoot(player, self.force)
-        
+                if self.hold_time >= 1:
+                    hold_factor = 1
+                else:
+                    hold_factor = self.hold_time / 1 # Vai ser um float que varia de 0 até 1
+                
+                print(hold_factor)
+                self.player_shoot(player, hold_factor)
 
         for arrow in self.moving_arrows:
             if self.check_collision(arrow, self.level_tiles):
