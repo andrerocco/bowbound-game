@@ -5,11 +5,11 @@ from math import atan2, sin, cos, pi
 class Arrow():
     def __init__(self, tipo: str = 'normal'):
         # Importa a imagem da flecha
-        self.base_image = pygame.image.load('./arrow.png')
+        self.base_image = pygame.image.load('./arrow.png').convert()
 
         # Atributos de características da flecha
         self.speed = 12
-        self.gravity = 0
+        self.gravity = 0.2
 
     # Quando for atirada, inicia os atributos usados para o seu movimento
     def start_shot(self, initial_position: tuple, target_position: tuple, force):
@@ -29,7 +29,7 @@ class Arrow():
         self.y_pos = self.rect.y
 
         # Gravidade da flecha atirada que depende da força (force vai de 1 a 100)
-        self.gravity = 6/force
+        #self.gravity = 12*(force/60)
 
     def move(self):
         # Aplica a gravidade no self.dy

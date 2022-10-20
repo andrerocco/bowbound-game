@@ -1,6 +1,7 @@
 from turtle import position, speed
 import pygame
 import config
+from time import time
 from classeTile import Tile
 from classePlayer import Player
 from classeArrow import Arrow
@@ -24,8 +25,6 @@ class Level:
         # Flechas
         self.moving_arrows = []
         self.stuck_arrows = []
-        self.force = 1 
-        self.switch = False # (MOUSEBUTTONDOWN)
 
     # Gera o mapa baseado no nível (baseado no argumento level_map recebido na construtora)
     def generate_level(self, level_map_matrix):
@@ -102,7 +101,7 @@ class Level:
 
         self.display_surface.blit(rotated_bow_image, rotated_bow_rect)
 
-    def player_shoot(self, player: Player, force):
+    def player_shoot(self, player: Player, hold_factor: float):
         try: # Tenta pegar uma flecha do arco (irá suceder se o arco tiver flechas)
             arrow = self.player.sprite.bow.pop_first_arrow()
         
@@ -113,7 +112,7 @@ class Level:
         else: # Caso o try tenha sucedido
             target_position = pygame.mouse.get_pos() # Pega a posição do mouse
 
-            arrow.start_shot(player.rect.center, target_position, force) # Inicializa os atributos de posição da flecha
+            arrow.start_shot(player.rect.center, target_position, hold_factor) # Inicializa os atributos de posição da flecha
             self.moving_arrows.append(arrow) # Adiciona a flecha na lista de flechas do level
 
             player.knockback(target_position) # Aplica o knockback no jogador
@@ -131,24 +130,17 @@ class Level:
         player.update(collided_delta_speed)
 
         """ UPDATE DAS FLECHAS ------ OTIMIZAR """
-        if self.switch:
-            self.force += 1
-        if self.force >= 60:
-            self.force = 60
-
         for event in event_listener:
-            print(self.force)
-
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1: # Se o botão esquerdo do mouse for pressionado
-                self.switch = True
+                self.start_hold = time()
+            elif event.type == pygame.MOUSEBUTTONUP and event.button == 1: # Quando o botão esquerdo do mouse for soltado
+                end_hold = time()
 
-            if event.type == pygame.MOUSEBUTTONUP and event.button == 1:
-                self.player_shoot(player, self.force) # Tenta atirar uma flecha
-                self.force = 1
-                self.switch = False
+                self.hold_time = end_hold - self.start_hold
+                self.player_shoot(player, self.force)
         
+
         for arrow in self.moving_arrows:
-            print(self.check_collision(arrow, self.level_tiles))
             if self.check_collision(arrow, self.level_tiles):
                 self.stuck_arrows.append(self.moving_arrows.pop(self.moving_arrows.index(arrow)))
             else:
