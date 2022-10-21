@@ -42,6 +42,8 @@ class Player(pygame.sprite.Sprite):
         # Arco
         self.bow = Bow(self.rect.center)
 
+    """ MOVIMENTAÇÃO """
+
     def jump(self):
         self.delta_position.y = -self.jump_strength
         self.jumping_status = True
@@ -118,9 +120,44 @@ class Player(pygame.sprite.Sprite):
         # Movimento y
         self.rect.y += dy
 
+    """ COLISÃO """
+    # Colide a próxima posição do objeto e retorna a nova posição colidida em uma tupla (collided_dx, collided_dy)
+    def get_collided_position(self, next_position: tuple, collide_with: pygame.sprite.Group) -> tuple:
+        dx, dy = next_position
+
+        for tile in collide_with.sprites():
+            # Colisão horizontal
+            if tile.rect.colliderect(self.rect.x + dx, self.rect.y, self.rect.width, self.rect.height): # Testa a colisão do deslocamento horizontal
+                if self.delta_position.x < 0: # Caso o jogador colida com um superfície pela esquerda
+                    dx = tile.rect.right - self.rect.left
+                elif self.delta_position.x > 0: # Caso o jogador colida com um superfície pela direita
+                    dx = tile.rect.left - self.rect.right
+                else:
+                    dx = 0
+
+            # Colisão vertical
+            if tile.rect.colliderect(self.rect.x, self.rect.y + dy, self.rect.width, self.rect.height): # Testa a colisão do deslocamento vertical
+                if self.delta_position.y < 0 and (tile.rect.bottom <= self.rect.top): # Jogador "subindo"
+                    dy = (tile.rect.bottom - self.rect.top)
+                    
+                    self.delta_position.y = 0 # Reinicia a gravidade
+                if self.delta_position.y > 0 and (tile.rect.top >= self.rect.bottom): # Jogador "caindo"
+                    dy = (tile.rect.top - self.rect.bottom)
+                    
+                    self.delta_position.y = 0 # Reinicia a gravidade  
+                    self.set_jumping_status(False) # Define o status de pulo como falso
+                    self.set_on_ground_status(True) # Define o status de estar no chão como verdadeiro
+                else:
+                    dy = 0
+
+        return (dx, dy) # Retorna as posições colididas com o sprite group passado como argumento
+
+    """ ATUALIZAÇÃO """
+
     def update(self, delta_speed): # Calcula o movimento baseado nos inputs
         self.move(delta_speed) # Atualiza a posição do player
-        
+    
+
     # Setters e Getters
     def set_on_ground_status(self, status: bool):
         self.on_ground_status = status

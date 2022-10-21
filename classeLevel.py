@@ -49,52 +49,6 @@ class Level:
                     # Gera o jogador usando a classe Player e enviando a posição inicial
                     player_sprite = Player((player_origin_x, player_origin_y)) 
                     self.player.add(player_sprite)
-    
-    # Recebe o objeto que irá colidir, a próxima posição do objeto e o sprite group que irá ser colidido
-    # Colide a próxima posição do objeto e retorna a nova posição colidida em uma tupla (collided_dx, collided_dy)
-    def get_collided_position(self, object, next_position: tuple, collide_with: pygame.sprite.Group) -> tuple:
-        dx, dy = next_position
-
-        for tile in collide_with.sprites():
-            # Colisão horizontal
-            if tile.rect.colliderect(object.rect.x + dx, object.rect.y, object.rect.width, object.rect.height): # Testa a colisão do deslocamento horizontal
-                if object.delta_position.x < 0: # Caso o jogador colida com um superfície pela esquerda
-                    dx = tile.rect.right - object.rect.left
-                elif object.delta_position.x > 0: # Caso o jogador colida com um superfície pela direita
-                    dx = tile.rect.left - object.rect.right
-                else:
-                    dx = 0
-
-            # Colisão vertical
-            if tile.rect.colliderect(object.rect.x, object.rect.y + dy, object.rect.width, object.rect.height): # Testa a colisão do deslocamento vertical
-                if object.delta_position.y < 0 and (tile.rect.bottom <= object.rect.top): # Jogador "subindo"
-                    dy = (tile.rect.bottom - object.rect.top)
-                    
-                    if isinstance(object, Player):
-                        object.delta_position.y = 0 # Reinicia a gravidade
-                if object.delta_position.y > 0 and (tile.rect.top >= object.rect.bottom): # Jogador "caindo"
-                    dy = (tile.rect.top - object.rect.bottom)
-                    
-                    if isinstance(object, Player):
-                        object.delta_position.y = 0 # Reinicia a gravidade  
-                        object.set_jumping_status(False)
-                        object.set_on_ground_status(True)
-                else:
-                    dy = 0
-
-        return (dx, dy) # Retorna as posições colididas com o sprite group passado como argumento
-
-    def check_collision(self, object, collide_with: pygame.sprite.Group) -> bool:
-        if isinstance(object, Player):
-            for tile in collide_with.sprites():
-                if tile.rect.colliderect(object.rect):
-                    return True
-            return False
-        elif isinstance(object, Arrow):
-            for tile in collide_with.sprites():
-                if tile.rect.collidepoint(object.rect.center):
-                    return True
-            return False
 
     def display_bow(self, player_position):
         player_x, player_y = player_position
@@ -151,11 +105,11 @@ class Level:
         delta_speed = player.calculate_speed()
         
         # A variável collided_delta_speed é uma tupla com os valores de deslocamento transformados a partir das colisões
-        collided_delta_speed = self.get_collided_position(player, delta_speed, self.level_tiles)
+        collided_delta_speed = player.get_collided_position(delta_speed, self.level_tiles)
         
         # Aplica o deslocamento final no jogador
         player.update(collided_delta_speed)
-
+        
         """ UPDATE DAS FLECHAS ------ ORGANIZAR DEPOIS """
         for event in event_listener:
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1: # Se o botão esquerdo do mouse for pressionado
@@ -176,7 +130,7 @@ class Level:
             delta_speed = arrow.calculate_speed()
 
             # A variável collided_delta_speed é uma tupla com os valores de deslocamento transformados a partir das colisões
-            collided_delta_speed = self.get_collided_position(arrow, delta_speed, self.level_tiles)
+            collided_delta_speed = arrow.get_collided_position(delta_speed, self.level_tiles)
             
             # Atualiza a posição do arrow com o novo deslocamento colidido 
             arrow.update(collided_delta_speed)
