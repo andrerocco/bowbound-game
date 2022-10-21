@@ -1,16 +1,16 @@
 import time
-
+from datetime import timedelta
 
 class Timer:
     def __init__(self):
         self.start = time.time() # Armazena o tempo de inicio
         self.finish = None # Enquanto não tiver um valor, será None
 
-    def getTimer(self):
-        return time.time() - self.start # Retorna o tempo atual do level
+    def get_timer(self):
+        return time.time() - self.start # Retorna um float com o tempo decorrido em segundos
 
-    def setFinish(self):
+    def set_finish(self):
         self.finish = time.time() - self.start # Quando o jogador passa de level usará esse metodo para gravar o tempo
 
-    def getLevelTime(self):
+    def get_level_time(self):
         return self.start - self.finish # Retorna o tempo total do level para o uso dos scores

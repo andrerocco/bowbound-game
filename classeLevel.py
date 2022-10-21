@@ -133,7 +133,12 @@ class Level:
 
     def display_timer(self, surface):
         font = pygame.font.SysFont('arial', 30, True, False)  # Edita a fonte
-        text = font.render(f'Tempo: {self.timer.getTimer():.0f}', True, (0, 0, 0))  # Edita o texto
+
+        time_seconds = self.timer.get_timer()
+        minutes, seconds = divmod(time_seconds, 60)
+        formated_time = "{:0>2}:{:05.2f}".format(int(minutes),seconds)
+
+        text = font.render(f'Tempo: {formated_time}', True, (0, 0, 0))  # Edita o texto
         surface.blit(text, (400, 10))  # Mostra na tela
 
     def run(self, event_listener):
