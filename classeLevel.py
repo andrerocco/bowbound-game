@@ -166,7 +166,6 @@ class Level:
                 else:
                     hold_factor = self.hold_time / 1 # Vai ser um float que varia de 0 até 1
                 
-                print(hold_factor)
                 self.player_shoot(player, hold_factor)
 
         for arrow in self.moving_arrows:
