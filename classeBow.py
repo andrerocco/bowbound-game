@@ -2,6 +2,7 @@ import pygame
 from math import pi, atan2
 from classeArrow import Arrow
 
+
 class Bow():
     def __init__(self, initial_position):
         # Atributos padrões
@@ -27,3 +28,6 @@ class Bow():
     
     def pop_first_arrow(self) -> Arrow:
         return self.arrows.pop(0) # Retorna a primeira flecha da lista e a remove da lista
+
+    def add_stuck_arrow(self, arrow: Arrow):
+        self.arrows.append(arrow)
