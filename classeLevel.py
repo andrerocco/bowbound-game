@@ -4,7 +4,7 @@ from time import time
 from classeTile import Tile
 from classePlayer import Player
 from classeArrow import Arrow
-from a import Timer
+from classeTimer import Timer
 
 class Level:
     def __init__(self, level_data: dict, surface):
