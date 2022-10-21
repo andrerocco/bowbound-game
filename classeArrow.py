@@ -32,13 +32,10 @@ class Arrow():
         self.x_pos = self.rect.x
         self.y_pos = self.rect.y
 
-    def move(self):
-        # Aplica a gravidade no self.dy
-        self.delta_position.y += self.gravity
-
+    def move(self, delta_speed):
         # Acrescenta self.x_pos e self.y_pos para floats
-        self.x_pos += self.delta_position.x
-        self.y_pos += self.delta_position.y
+        self.x_pos += delta_speed[0]
+        self.y_pos += delta_speed[1]
 
         # Atualiza a posição do retângulo de fato
         self.rect.x = int(self.x_pos)
@@ -53,7 +50,13 @@ class Arrow():
         self.image = rotated_image
         self.rect = self.image.get_rect(center=self.rect.center)
 
-    def update(self):
-        self.move()
+    def calculate_speed(self):
+        # Aplica a gravidade no self.dy
+        self.delta_position.y += self.gravity
+
+        return self.delta_position
+
+    def update(self, delta_speed):
+        self.move(delta_speed)
         self.rotate_image()
  

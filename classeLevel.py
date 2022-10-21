@@ -58,22 +58,25 @@ class Level:
         for tile in collide_with.sprites():
             # Colisão horizontal
             if tile.rect.colliderect(object.rect.x + dx, object.rect.y, object.rect.width, object.rect.height): # Testa a colisão do deslocamento horizontal
-                if object.speed.x < 0: # Caso o jogador colida com um superfície pela esquerda
+                if object.delta_position.x < 0: # Caso o jogador colida com um superfície pela esquerda
                     dx = tile.rect.right - object.rect.left
-                elif object.speed.x > 0: # Caso o jogador colida com um superfície pela direita
+                elif object.delta_position.x > 0: # Caso o jogador colida com um superfície pela direita
                     dx = tile.rect.left - object.rect.right
                 else:
                     dx = 0
 
             # Colisão vertical
             if tile.rect.colliderect(object.rect.x, object.rect.y + dy, object.rect.width, object.rect.height): # Testa a colisão do deslocamento vertical
-                if object.speed.y < 0 and (tile.rect.bottom <= object.rect.top): # Jogador "subindo"
+                if object.delta_position.y < 0 and (tile.rect.bottom <= object.rect.top): # Jogador "subindo"
                     dy = (tile.rect.bottom - object.rect.top)
-                    object.speed.y = 0 # Reinicia a gravidade
-                if object.speed.y > 0 and (tile.rect.top >= object.rect.bottom): # Jogador "caindo"
-                    dy = (tile.rect.top - object.rect.bottom)
-                    object.speed.y = 0 # Reinicia a gravidade  
+                    
                     if isinstance(object, Player):
+                        object.delta_position.y = 0 # Reinicia a gravidade
+                if object.delta_position.y > 0 and (tile.rect.top >= object.rect.bottom): # Jogador "caindo"
+                    dy = (tile.rect.top - object.rect.bottom)
+                    
+                    if isinstance(object, Player):
+                        object.delta_position.y = 0 # Reinicia a gravidade  
                         object.set_jumping_status(False)
                         object.set_on_ground_status(True)
                 else:
@@ -169,10 +172,18 @@ class Level:
                 self.player_shoot(player, hold_factor)
 
         for arrow in self.moving_arrows:
-            if self.check_collision(arrow, self.level_tiles):
+            # A variável delta_speed é uma tupla com os valores do proximo deslocamento
+            delta_speed = arrow.calculate_speed()
+
+            # A variável collided_delta_speed é uma tupla com os valores de deslocamento transformados a partir das colisões
+            collided_delta_speed = self.get_collided_position(arrow, delta_speed, self.level_tiles)
+            
+            # Atualiza a posição do arrow com o novo deslocamento colidido 
+            arrow.update(collided_delta_speed)
+
+            if delta_speed != collided_delta_speed:
                 self.stuck_arrows.append(self.moving_arrows.pop(self.moving_arrows.index(arrow)))
-            else:
-                arrow.update()
+
             self.display_surface.blit(arrow.image, arrow.rect)
 
         for arrow in self.stuck_arrows:
