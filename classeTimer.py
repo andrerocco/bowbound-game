@@ -4,7 +4,7 @@ import time
 class Timer:
     def __init__(self):
         self.start = time.time() # Armazena o tempo de inicio
-        self.finish = 0
+        self.finish = None # Enquanto não tiver um valor, será None
 
     def getTimer(self):
         return time.time() - self.start # Retorna o tempo atual do level

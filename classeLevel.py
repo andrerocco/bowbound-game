@@ -126,7 +126,7 @@ class Level:
                 self.stuck_arrows.remove(arrow)
                 self.player.sprite.bow.add_stuck_arrow(arrow)
 
-    def display_quantity_arrow(self, surface, player):
+    def display_arrow_quantity(self, surface, player):
         font = pygame.font.SysFont('arial', 30, True, False)  # Edita a fonte
         text = font.render(f'Quantidade de flechas: {len(player.bow.arrows)}', True, (0, 0, 0))  # Edita o texto
         surface.blit(text, (10, 10))  # Mostra na tela
@@ -181,5 +181,5 @@ class Level:
         self.player.draw(self.display_surface)
         self.display_bow(player.rect.center)
         self.level_tiles.draw(self.display_surface)
-        self.display_quantity_arrow(self.display_surface, player)
-        self.display_timer(self.display_surface)
+        self.display_arrow_quantity(self.display_surface, player) # Mostra o número de flechas no arco
+        self.display_timer(self.display_surface) # Mostra o tempo na tela
