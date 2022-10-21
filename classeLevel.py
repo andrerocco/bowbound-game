@@ -134,7 +134,7 @@ class Level:
     def display_timer(self, surface):
         font = pygame.font.SysFont('arial', 30, True, False)  # Edita a fonte
 
-        time_seconds = self.timer.get_timer()
+        time_seconds = self.timer.get_time_from_start()
         minutes, seconds = divmod(time_seconds, 60)
         formated_time = "{:0>2}:{:05.2f}".format(int(minutes),seconds)
 
