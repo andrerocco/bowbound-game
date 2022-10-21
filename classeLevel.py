@@ -145,7 +145,7 @@ class Level:
         player = self.player.sprite
 
         # A variável delta_speed é uma tupla com os valores de deslocamento calculados baseados no player
-        delta_speed = player.calculate_speed(event_listener)
+        delta_speed = player.calculate_speed()
         
         # A variável collided_delta_speed é uma tupla com os valores de deslocamento transformados a partir das colisões
         collided_delta_speed = self.get_collided_position(player, delta_speed, self.level_tiles)

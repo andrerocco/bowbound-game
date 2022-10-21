@@ -98,7 +98,7 @@ class Player(pygame.sprite.Sprite):
         knockback_factor = self.knockback_strength * hold_factor
         self.speed = -(direction * knockback_factor)
 
-    def calculate_speed(self, event_listener):
+    def calculate_speed(self):
         # Aplica a aceleração do input
         self.movement_input() # Muda os valores de aceleração
         self.apply_accceleration() # Aplica a aceleração ao vetor de velocidade
