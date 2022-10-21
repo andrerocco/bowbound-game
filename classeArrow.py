@@ -16,7 +16,6 @@ class Arrow():
     def start_shot(self, initial_position: tuple, target_position: tuple, hold_factor: float):
         # Velocidade da flecha depende do tempo que o jogador segurou o mouse
         self.speed = self.minimun_speed + (self.maximun_extra_speed * hold_factor)
-        print(self.speed)
 
         # Atributos de posição
         angle_radian = atan2(target_position[1] - initial_position[1], target_position[0] - initial_position[0]) # Define o ângulo em radianos
