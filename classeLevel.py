@@ -4,6 +4,7 @@ from time import time
 from classeTile import Tile
 from classePlayer import Player
 from classeArrow import Arrow
+from a import Timer
 
 class Level:
     def __init__(self, level_data: dict, surface):
@@ -24,6 +25,8 @@ class Level:
         # Flechas
         self.moving_arrows = []
         self.stuck_arrows = []
+
+        self.timer = Timer()
 
     # Gera o mapa baseado no nível (baseado no argumento level_map recebido na construtora)
     def generate_level(self, level_map_matrix):
@@ -116,6 +119,23 @@ class Level:
 
             player.knockback(target_position) # Aplica o knockback no jogador
 
+    def get_arrow_stuck(self, player_position):
+        for arrow in self.stuck_arrows:
+            # Se o player colidir com alguma flecha remove a flecha das flechas presas e adiciona no player
+            if arrow.rect.colliderect(player_position):
+                self.stuck_arrows.remove(arrow)
+                self.player.sprite.bow.add_stuck_arrow(arrow)
+
+    def display_quantity_arrow(self, surface, player):
+        font = pygame.font.SysFont('arial', 30, True, False)  # Edita a fonte
+        text = font.render(f'Quantidade de flechas: {len(player.bow.arrows)}', True, (0, 0, 0))  # Edita o texto
+        surface.blit(text, (10, 10))  # Mostra na tela
+
+    def display_timer(self, surface):
+        font = pygame.font.SysFont('arial', 30, True, False)  # Edita a fonte
+        text = font.render(f'Tempo: {self.timer.getTimer():.0f}', True, (0, 0, 0))  # Edita o texto
+        surface.blit(text, (400, 10))  # Mostra na tela
+
     def run(self, event_listener):
         player = self.player.sprite
 
@@ -153,9 +173,13 @@ class Level:
 
         for arrow in self.stuck_arrows:
             self.display_surface.blit(arrow.image, arrow.rect)
+
+        self.get_arrow_stuck(player.rect)
         """ FIM DO UPDATE DAS FLECHAS """
 
         # Draw
         self.player.draw(self.display_surface)
         self.display_bow(player.rect.center)
         self.level_tiles.draw(self.display_surface)
+        self.display_quantity_arrow(self.display_surface, player)
+        self.display_timer(self.display_surface)
