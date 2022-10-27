@@ -1,9 +1,6 @@
 import pygame
+from abstractBuildStructure import BuildStructure
 
-class Tile(pygame.sprite.Sprite):
+class Tile(BuildStructure):
     def __init__(self, position, size):
-        super().__init__()
-        
-        self.image = pygame.Surface((size, size)) # Cria uma superfície quadrada com o tamanho size
-        self.image.fill('grey')
-        self.rect = self.image.get_rect(topleft = position)
+        super().__init__(size, size, position)
