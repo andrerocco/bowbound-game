@@ -14,7 +14,7 @@ class Player(pygame.sprite.Sprite):
         self.precise_rect_position_x = self.rect.x
         
         # Velocidades
-        self.speed = pygame.Vector2(0, 0)
+        self.delta_position = pygame.Vector2(0, 0)
 
         self.knockback_speed = pygame.Vector2(0, 0)
         self.walking_speed = 0
@@ -42,8 +42,10 @@ class Player(pygame.sprite.Sprite):
         # Arco
         self.bow = Bow(self.rect.center)
 
+    """ MOVIMENTAÇÃO """
+
     def jump(self):
-        self.speed.y = -self.jump_strength
+        self.delta_position.y = -self.jump_strength
         self.jumping_status = True
         self.on_ground_status = False
 
@@ -69,23 +71,23 @@ class Player(pygame.sprite.Sprite):
             self.jump()
 
     def apply_accceleration(self):
-        temp_speed_result = self.speed.x + self.acceleration.x
+        temp_speed_result = self.delta_position.x + self.acceleration.x
 
         # Se a velocidade for maior que a máxima de caminhada e o jogador estiver pressionando a tecla de movimento na mesma direção, não entra na condição
         if not (temp_speed_result > self.max_walking_speed and self.thrust == 1) and not (temp_speed_result < -self.max_walking_speed and self.thrust == -1):
-            self.speed.x += self.acceleration.x
+            self.delta_position.x += self.acceleration.x
         
         # Aplica a aceleração da gravidade
-        self.speed.y += self.acceleration.y
+        self.delta_position.y += self.acceleration.y
 
     def apply_friction(self):
         if self.on_ground_status and self.thrust == 0:
-            self.speed.x = int(self.speed.x * self.ground_friction * 1000)/1000 # Arredonda para 4 pontos de precisão
-        elif self.on_ground_status and abs(self.speed.x) > self.max_walking_speed:
-            self.speed.x = int(self.speed.x * self.ground_friction * 1000)/1000 # Arredonda para 4 pontos de precisão
+            self.delta_position.x = int(self.delta_position.x * self.ground_friction * 1000)/1000 # Arredonda para 4 pontos de precisão
+        elif self.on_ground_status and abs(self.delta_position.x) > self.max_walking_speed:
+            self.delta_position.x = int(self.delta_position.x * self.ground_friction * 1000)/1000 # Arredonda para 4 pontos de precisão
 
         if not self.on_ground_status:
-            self.speed.x = int(self.speed.x * self.air_friction * 1000)/1000 # Arredonda para 4 pontos de precisão
+            self.delta_position.x = int(self.delta_position.x * self.air_friction * 1000)/1000 # Arredonda para 4 pontos de precisão
 
     def knockback(self, target_position, hold_factor: float = 1):
         self.on_ground_status = False
@@ -96,9 +98,9 @@ class Player(pygame.sprite.Sprite):
 
         # Aplica o knockback
         knockback_factor = self.knockback_strength * hold_factor
-        self.speed = -(direction * knockback_factor)
+        self.delta_position = -(direction * knockback_factor)
 
-    def calculate_speed(self, event_listener):
+    def calculate_speed(self):
         # Aplica a aceleração do input
         self.movement_input() # Muda os valores de aceleração
         self.apply_accceleration() # Aplica a aceleração ao vetor de velocidade
@@ -106,7 +108,7 @@ class Player(pygame.sprite.Sprite):
         # Aplica a fricção na aceleração horizontal
         self.apply_friction()
 
-        return self.speed
+        return self.delta_position
 
     def move(self, delta_speed):
         dx, dy = delta_speed
@@ -118,9 +120,44 @@ class Player(pygame.sprite.Sprite):
         # Movimento y
         self.rect.y += dy
 
+    """ COLISÃO """
+    # Colide a próxima posição do objeto e retorna a nova posição colidida em uma tupla (collided_dx, collided_dy)
+    def get_collided_position(self, next_position: tuple, collide_with: pygame.sprite.Group) -> tuple:
+        dx, dy = next_position
+
+        for tile in collide_with.sprites():
+            # Colisão horizontal
+            if tile.rect.colliderect(self.rect.x + dx, self.rect.y, self.rect.width, self.rect.height): # Testa a colisão do deslocamento horizontal
+                if self.delta_position.x < 0: # Caso o jogador colida com um superfície pela esquerda
+                    dx = tile.rect.right - self.rect.left
+                elif self.delta_position.x > 0: # Caso o jogador colida com um superfície pela direita
+                    dx = tile.rect.left - self.rect.right
+                else:
+                    dx = 0
+
+            # Colisão vertical
+            if tile.rect.colliderect(self.rect.x, self.rect.y + dy, self.rect.width, self.rect.height): # Testa a colisão do deslocamento vertical
+                if self.delta_position.y < 0 and (tile.rect.bottom <= self.rect.top): # Jogador "subindo"
+                    dy = (tile.rect.bottom - self.rect.top)
+                    
+                    self.delta_position.y = 0 # Reinicia a gravidade
+                if self.delta_position.y > 0 and (tile.rect.top >= self.rect.bottom): # Jogador "caindo"
+                    dy = (tile.rect.top - self.rect.bottom)
+                    
+                    self.delta_position.y = 0 # Reinicia a gravidade  
+                    self.set_jumping_status(False) # Define o status de pulo como falso
+                    self.set_on_ground_status(True) # Define o status de estar no chão como verdadeiro
+                else:
+                    dy = 0
+
+        return (dx, dy) # Retorna as posições colididas com o sprite group passado como argumento
+
+    """ ATUALIZAÇÃO """
+
     def update(self, delta_speed): # Calcula o movimento baseado nos inputs
         self.move(delta_speed) # Atualiza a posição do player
-        
+    
+
     # Setters e Getters
     def set_on_ground_status(self, status: bool):
         self.on_ground_status = status
