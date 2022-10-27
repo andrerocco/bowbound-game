@@ -2,6 +2,7 @@ import pygame
 import config
 from time import time
 from classeTile import Tile
+from classeSpike import Spike
 from classePlayer import Player
 #from abstractArrow import Arrow
 #from classeStandartArrow import StandartArrow
@@ -20,7 +21,11 @@ class Level:
         self.player = pygame.sprite.GroupSingle()
 
         # Agrupa todas as superfícies do nível atual geradas por generate_level()
-        self.level_tiles = pygame.sprite.Group() 
+        self.level_tiles = pygame.sprite.Group()
+
+        # Agrupa as outras estruturas (com interação baseada em colisão)
+        self.level_spikes = pygame.sprite.Group()
+
         self.generate_level(self.level_map_matrix)
 
         # Flechas
@@ -42,6 +47,10 @@ class Level:
                     tile = Tile((x, y), tile_size) # Invoca a classe Tile que cria o sprite daquele bloco
                     self.level_tiles.add(tile) # Adiciona o tile criado no atributo que agrupa os tiles
                 
+                if tile == 'A':
+                    spike = Spike((x, y), 48, 48)
+                    self.level_spikes.add(spike)
+
                 if tile == 'P':
                     # Os valores de posição são ajustados pois o player é gerado com base nas coordenadas em seu midbottom
                     player_origin_x = x + (tile_size/2)
@@ -99,6 +108,7 @@ class Level:
         text = font.render(f'Tempo: {formated_time}', True, (0, 0, 0))  # Edita o texto
         surface.blit(text, (400, 10))  # Mostra na tela
 
+
     def run(self, event_listener):
         player = self.player.sprite
 
@@ -110,7 +120,10 @@ class Level:
         
         # Aplica o deslocamento final no jogador
         player.update(collided_delta_speed)
-        
+
+
+
+
         """ UPDATE DAS FLECHAS ------ ORGANIZAR DEPOIS """
         for event in event_listener:
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1: # Se o botão esquerdo do mouse for pressionado
@@ -147,9 +160,22 @@ class Level:
         self.get_arrow_stuck(player.rect)
         """ FIM DO UPDATE DAS FLECHAS """
 
+
+
+        """ SPIKES - ORGANIZAR DEPOIS """
+        for spike in self.level_spikes:
+            if spike.collided(player):
+                print("MORREU")
+
+
+        """ FIM DOS SPIKES """
+
+
+
         # Draw
         self.player.draw(self.display_surface)
         self.display_bow(player.rect.center)
         self.level_tiles.draw(self.display_surface)
+        self.level_spikes.draw(self.display_surface)
         self.display_arrow_quantity(self.display_surface, player) # Mostra o número de flechas no arco
         self.display_timer(self.display_surface) # Mostra o tempo na tela
