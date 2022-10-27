@@ -1,17 +1,20 @@
-from cmath import pi
 import pygame
+from abc import ABC
+from cmath import pi
 from math import atan2, sin, cos, pi
 
-class Arrow():
-    def __init__(self, tipo: str = 'normal'):
+class Arrow(ABC):
+    def __init__(self, image_path: str, minimun_speed, maximun_extra_speed, gravity):
+        super().__init__() # Inicia a classe ABC que define a classe como abstrata
+
         # Importa a imagem da flecha
-        self.base_image = pygame.image.load('./arrow.png').convert()
+        self.base_image = pygame.image.load(image_path).convert()
 
         # Atributos de características da flecha
-        self.minimun_speed = 10
-        self.maximun_extra_speed = 15
-        self.gravity = 0.2
-
+        self.minimun_speed = minimun_speed
+        self.maximun_extra_speed = maximun_extra_speed
+        self.gravity = gravity
+    
     # Quando for atirada, inicia os atributos usados para o seu movimento
     def start_shot(self, initial_position: tuple, target_position: tuple, hold_factor: float):
         # Velocidade da flecha depende do tempo que o jogador segurou o mouse
@@ -31,7 +34,8 @@ class Arrow():
         # Posição x e y da flecha (quer será atualizada para float apartir de dx e dy)
         self.x_pos = self.rect.x
         self.y_pos = self.rect.y
-
+    
+    # Rotaciona a imagem baseado no vetor direção
     def rotate_image(self):
         angle_radian = atan2(self.delta_position.y, self.delta_position.x) # Define o ângulo em radianos do vetor deslocamento
         angle_degrees = -(angle_radian) * 180 / pi # Converte o ângulo para graus
@@ -40,7 +44,7 @@ class Arrow():
         rotated_image.set_colorkey((255, 255, 255))
         self.image = rotated_image
         self.rect = self.image.get_rect(center=self.rect.center)
-
+    
     def calculate_speed(self):
         # Aplica a gravidade no self.dy
         self.delta_position.y += self.gravity
@@ -83,4 +87,3 @@ class Arrow():
     def update(self, delta_speed):
         self.move(delta_speed)
         self.rotate_image()
- 

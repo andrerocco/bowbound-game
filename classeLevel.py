@@ -3,7 +3,8 @@ import config
 from time import time
 from classeTile import Tile
 from classePlayer import Player
-from classeArrow import Arrow
+#from abstractArrow import Arrow
+#from classeStandartArrow import StandartArrow
 from classeTimer import Timer
 
 class Level:
