@@ -11,7 +11,7 @@ levels = [{
 'X        X       X      X',
 'X        X              X',
 'X        X              X',
-'X   P    X      AAA     X',
+'X   P    X      AAA  D  X',
 'XXXXXXXXXXXXXXXXXXXXXXXXX']
 },
 {

@@ -5,6 +5,7 @@ from classeTile import Tile
 from classeSpike import Spike
 from classeTarget import Target
 from classePlayer import Player
+from classeExitDoor import ExitDoor
 #from abstractArrow import Arrow
 #from classeStandartArrow import StandartArrow
 from classeTimer import Timer
@@ -28,7 +29,7 @@ class Level:
         # Agrupa os alvos
         self.level_targets = pygame.sprite.Group()
         # Porta de saída do nível
-        self.level_exit = pygame.sprite.GroupSingle()
+        self.level_exit_door = pygame.sprite.GroupSingle()
 
 
         self.generate_level(self.level_map_matrix)
@@ -56,6 +57,9 @@ class Level:
                 
                 if tile == 'O':
                     self.level_targets.add(Target((x, y), 48, 48)) # Adiciona o alvo criado no atributo que agrupa os alvos
+
+                if tile == 'D':
+                    self.level_exit_door.add(ExitDoor((x, y), 48, 48)) # Cria a porta de saída
 
                 if tile == 'P':
                     # Os valores de posição são ajustados pois o player é gerado com base nas coordenadas em seu midbottom
@@ -166,6 +170,12 @@ class Level:
                     target.kill()
                     self.moving_arrows.remove(arrow)
 
+                    if len(self.level_targets) == 0:
+                        self.level_exit_door.sprite.unlock()
+                        print(self.level_exit_door.sprite.is_locked())
+
+                        print("PORTA ABERTA")
+
         for arrow in self.stuck_arrows:
             self.display_surface.blit(arrow.image, arrow.rect)
 
@@ -188,5 +198,6 @@ class Level:
         self.level_tiles.draw(self.display_surface)
         self.level_spikes.draw(self.display_surface)
         self.level_targets.draw(self.display_surface)
+        self.level_exit_door.draw(self.display_surface)
         self.display_arrow_quantity(self.display_surface, player) # Mostra o número de flechas no arco
         self.display_timer(self.display_surface) # Mostra o tempo na tela
