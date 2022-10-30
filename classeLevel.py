@@ -172,7 +172,7 @@ class Level:
 
                     if len(self.level_targets) == 0:
                         self.level_exit_door.sprite.unlock()
-                        print(self.level_exit_door.sprite.is_locked())
+                        print(self.level_exit_door.sprite.is_unlocked())
 
                         print("PORTA ABERTA")
 
@@ -190,6 +190,11 @@ class Level:
                 print("MORREU")
         """ FIM DOS SPIKES """
 
+        
+        """ PORTA DE SAIDA - ORGANIZAR DEPOIS """
+        if self.level_exit_door.sprite.is_unlocked() and self.level_exit_door.sprite.collided(player):
+            print("SAIU DO LEVEL")
+        """ FIM DA PORTA DE SAIDA """
         
 
         # Draw
