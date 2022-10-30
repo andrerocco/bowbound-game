@@ -3,6 +3,7 @@ import config
 from time import time
 from classeTile import Tile
 from classeSpike import Spike
+from classeTarget import Target
 from classePlayer import Player
 #from abstractArrow import Arrow
 #from classeStandartArrow import StandartArrow
@@ -22,9 +23,13 @@ class Level:
 
         # Agrupa todas as superfícies do nível atual geradas por generate_level()
         self.level_tiles = pygame.sprite.Group()
-
         # Agrupa as outras estruturas (com interação baseada em colisão)
         self.level_spikes = pygame.sprite.Group()
+        # Agrupa os alvos
+        self.level_targets = pygame.sprite.Group()
+        # Porta de saída do nível
+        self.level_exit = pygame.sprite.GroupSingle()
+
 
         self.generate_level(self.level_map_matrix)
 
@@ -44,12 +49,13 @@ class Level:
                 y = row_index * tile_size # Gera a posição y do tile
                 
                 if tile == 'X':
-                    tile = Tile((x, y), tile_size) # Invoca a classe Tile que cria o sprite daquele bloco
-                    self.level_tiles.add(tile) # Adiciona o tile criado no atributo que agrupa os tiles
+                    self.level_tiles.add(Tile((x, y), tile_size)) # Adiciona o tile criado no atributo que agrupa os tiles
                 
                 if tile == 'A':
-                    spike = Spike((x, y), 48, 48)
-                    self.level_spikes.add(spike)
+                    self.level_spikes.add(Spike((x, y), 48, 48)) # Adiciona o spike criado no atributo que agrupa os spikes
+                
+                if tile == 'O':
+                    self.level_targets.add(Target((x, y), 48, 48)) # Adiciona o alvo criado no atributo que agrupa os alvos
 
                 if tile == 'P':
                     # Os valores de posição são ajustados pois o player é gerado com base nas coordenadas em seu midbottom
@@ -154,6 +160,12 @@ class Level:
 
             self.display_surface.blit(arrow.image, arrow.rect)
 
+            """ TAGET """
+            for target in self.level_targets:
+                if arrow.rect.colliderect(target.rect):
+                    target.kill()
+                    self.moving_arrows.remove(arrow)
+
         for arrow in self.stuck_arrows:
             self.display_surface.blit(arrow.image, arrow.rect)
 
@@ -166,16 +178,15 @@ class Level:
         for spike in self.level_spikes:
             if spike.collided(player):
                 print("MORREU")
-
-
         """ FIM DOS SPIKES """
 
-
+        
 
         # Draw
         self.player.draw(self.display_surface)
         self.display_bow(player.rect.center)
         self.level_tiles.draw(self.display_surface)
         self.level_spikes.draw(self.display_surface)
+        self.level_targets.draw(self.display_surface)
         self.display_arrow_quantity(self.display_surface, player) # Mostra o número de flechas no arco
         self.display_timer(self.display_surface) # Mostra o tempo na tela
