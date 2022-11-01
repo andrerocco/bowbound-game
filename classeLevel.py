@@ -124,18 +124,18 @@ class Level:
 
 
     def run(self, event_listener):
+
+        """ DETECÇÃO DE INPUT PARA O NÍVEL (atualizar quando for feito a organização dos inputs) """
+        if pygame.key.get_pressed()[pygame.K_r]:
+            self.restart_level()
+        """ FIM DA DETECÇÃO DE INPUT PARA O NÍVEL """
+
         player = self.player.sprite
 
-        # A variável delta_speed é uma tupla com os valores de deslocamento calculados baseados no player
-        delta_speed = player.calculate_speed()
+        delta_speed = player.calculate_speed() # É uma tupla com os valores de deslocamento calculados baseados no player
+        collided_delta_speed = player.get_collided_position(delta_speed, self.level_tiles) # É uma tupla com os valores de deslocamento transformados a partir das colisões
         
-        # A variável collided_delta_speed é uma tupla com os valores de deslocamento transformados a partir das colisões
-        collided_delta_speed = player.get_collided_position(delta_speed, self.level_tiles)
-        
-        # Aplica o deslocamento final no jogador
-        player.update(collided_delta_speed)
-
-
+        player.update(collided_delta_speed) # Aplica o deslocamento final no jogador
 
 
         """ UPDATE DAS FLECHAS ------ ORGANIZAR DEPOIS """
