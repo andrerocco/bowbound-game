@@ -12,8 +12,7 @@ from classeTimer import Timer
 
 class Level:
     def __init__(self, level_data: dict, surface):
-        self.level_number = level_data['level_number']
-        self.level_name = level_data['level_name']
+        self.level_data = level_data
         self.level_map_matrix = level_data['tile_map']
 
         # Superfície onde o nível será desenhado
@@ -31,7 +30,6 @@ class Level:
         # Porta de saída do nível
         self.level_exit_door = pygame.sprite.GroupSingle()
 
-
         self.generate_level(self.level_map_matrix)
 
         # Flechas
@@ -39,6 +37,12 @@ class Level:
         self.stuck_arrows = []
 
         self.timer = Timer()
+
+        # Status do nível
+        self.win_status = False
+
+    def restart_level(self):
+        self.__init__(self.level_data, self.display_surface)
 
     # Gera o mapa baseado no nível (baseado no argumento level_map recebido na construtora)
     def generate_level(self, level_map_matrix):
@@ -188,12 +192,14 @@ class Level:
         for spike in self.level_spikes:
             if spike.collided(player):
                 print("MORREU")
+                self.restart_level()
         """ FIM DOS SPIKES """
 
         
         """ PORTA DE SAIDA - ORGANIZAR DEPOIS """
         if self.level_exit_door.sprite.is_unlocked() and self.level_exit_door.sprite.collided(player):
             print("SAIU DO LEVEL")
+            self.win_status = True
         """ FIM DA PORTA DE SAIDA """
         
 

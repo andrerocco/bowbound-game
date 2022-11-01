@@ -8,7 +8,7 @@ levels = [{
 'XXXX             X   O  X',
 'X                X      X',
 'X        XX      X      X',
-'X        X       X      X',
+'X        X              X',
 'X        X              X',
 'X        X              X',
 'X   P    X      AAA  D  X',
