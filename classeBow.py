@@ -2,6 +2,7 @@ import pygame
 from math import pi, atan2
 from abstractArrow import Arrow
 from classeStandartArrow import StandartArrow
+from classeBounceArrow import BounceArrow
 
 
 class Bow():
@@ -13,7 +14,7 @@ class Bow():
         self.rect = self.image.get_rect(center=initial_position)
 
         # Flechas
-        self.arrows = [StandartArrow(), StandartArrow(), StandartArrow(), StandartArrow(), StandartArrow(), StandartArrow()]
+        self.arrows = [BounceArrow(), StandartArrow()]
         
     
     def get_rotated_image(self, player_position):
