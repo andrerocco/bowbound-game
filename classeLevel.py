@@ -104,6 +104,7 @@ class Level:
         for arrow in self.stuck_arrows:
             # Se o player colidir com alguma flecha remove a flecha das flechas presas e adiciona no player
             if arrow.rect.colliderect(player_position):
+                arrow.stuck = False
                 self.stuck_arrows.remove(arrow)
                 self.player.sprite.bow.add_stuck_arrow(arrow)
 
@@ -154,16 +155,9 @@ class Level:
                 self.player_shoot(player, hold_factor)
 
         for arrow in self.moving_arrows:
-            # A variável delta_speed é uma tupla com os valores do proximo deslocamento
-            delta_speed = arrow.calculate_speed()
+            arrow.update(self.level_tiles) # Aplica o deslocamento na flecha
 
-            # A variável collided_delta_speed é uma tupla com os valores de deslocamento transformados a partir das colisões
-            collided_delta_speed = arrow.get_collided_position(delta_speed, self.level_tiles)
-            
-            # Atualiza a posição do arrow com o novo deslocamento colidido 
-            arrow.update(collided_delta_speed)
-
-            if delta_speed != collided_delta_speed:
+            if arrow.stuck:
                 self.stuck_arrows.append(self.moving_arrows.pop(self.moving_arrows.index(arrow)))
 
             self.display_surface.blit(arrow.image, arrow.rect)
