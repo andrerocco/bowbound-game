@@ -106,7 +106,7 @@ class Level:
             if arrow.rect.colliderect(player_position):
                 arrow.stuck = False
                 self.stuck_arrows.remove(arrow)
-                self.player.sprite.bow.add_stuck_arrow(arrow)
+                self.player.sprite.bow.add_arrow(arrow)
 
     def display_arrow_quantity(self, surface, player):
         font = pygame.font.SysFont('arial', 30, True, False)  # Edita a fonte

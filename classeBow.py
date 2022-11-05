@@ -32,5 +32,5 @@ class Bow():
     def pop_first_arrow(self) -> Arrow:
         return self.arrows.pop(0) # Retorna a primeira flecha da lista e a remove da lista
 
-    def add_stuck_arrow(self, arrow: Arrow):
+    def add_arrow(self, arrow: Arrow):
         self.arrows.append(arrow)
