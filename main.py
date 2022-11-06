@@ -7,13 +7,13 @@ pygame.init()
 clock = pygame.time.Clock()
 
 # Configurações da tela
-screen_width = 1200
-screen_height = 600
-screen = pygame.display.set_mode((screen_width, screen_height), pygame.RESIZABLE)
+SCREEN_WIDTH = 1400
+SCREEN_HEIGHT = 800
+screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.RESIZABLE)
 
 # Nível
 current_level = config.levels[0]
-level = Level(current_level, screen) # Passa a matriz que representa o nível e a superfície onde o nível será desenhado
+level = Level(current_level) # Passa a matriz que representa o nível e a superfície onde o nível será desenhado
 
 while True:
     event_listener = pygame.event.get()
@@ -23,11 +23,17 @@ while True:
             exit()
     
     pygame.display.flip()
-    
-    # Preenchimento de tela
-    screen.fill('black')
 
-    # Conteúdo do jogo
-    level.run(event_listener)
+    """ Conteúdo do jogo """
+    
+    display_surface = level.run(event_listener) # Executa o nível atual
+    
+    x_pos = int((SCREEN_WIDTH - display_surface.get_width()) / 2) # Centraliza a superfície do nível na tela
+    y_pos = int((SCREEN_HEIGHT - display_surface.get_height()) / 2) # Centraliza a superfície do nível na tela
+
+    screen.blit(display_surface, (x_pos, y_pos)) # Desenha a superfície do nível na tela
+    display_surface.fill('black') # Pinta a superfície de preto (para evitar rastros de imagem)
+    
+    """ Fim do conteúdo do jogo """
 
     clock.tick(60)
