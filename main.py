@@ -31,11 +31,14 @@ while True:
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_F11:
                 fullscreen = not fullscreen
-                
                 if fullscreen:
+                    pygame.display.quit()
                     screen = pygame.display.set_mode(MONITOR_SIZE, pygame.FULLSCREEN)
+                    pygame.display.init()
                 else:
+                    pygame.display.quit()
                     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.RESIZABLE)
+                    pygame.display.init()
     
     pygame.display.flip()
 
