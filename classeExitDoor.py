@@ -1,5 +1,4 @@
 import pygame
-from traitlets import Bool
 from abstractBuildStructure import BuildStructure
 
 class ExitDoor(BuildStructure):
