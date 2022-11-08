@@ -7,13 +7,18 @@ pygame.init()
 clock = pygame.time.Clock()
 
 # Configurações da tela
-SCREEN_WIDTH = 1200
-SCREEN_HEIGHT = 700
+MONITOR_SIZE = (pygame.display.Info().current_w, pygame.display.Info().current_h)
+SCREEN_WIDTH = int(MONITOR_SIZE[0] * 0.95)
+SCREEN_HEIGHT = int(MONITOR_SIZE[1] * 0.8)
+
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.RESIZABLE)
 
 # Nível
 current_level = config.levels[0]
 level = Level(current_level) # Passa a matriz que representa o nível e a superfície onde o nível será desenhado
+
+# Status de tela cheia
+fullscreen = False
 
 while True:
     event_listener = pygame.event.get()
@@ -21,6 +26,16 @@ while True:
         if event.type == pygame.QUIT: # Clicar no botão de fechar a janela
             pygame.quit()
             exit()
+        if event.type == pygame.VIDEORESIZE:
+            screen = pygame.display.set_mode((event.w, event.h), pygame.RESIZABLE)
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_F11:
+                fullscreen = not fullscreen
+                
+                if fullscreen:
+                    screen = pygame.display.set_mode(MONITOR_SIZE, pygame.FULLSCREEN)
+                else:
+                    screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.RESIZABLE)
     
     pygame.display.flip()
 
