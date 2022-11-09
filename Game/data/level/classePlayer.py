@@ -1,5 +1,5 @@
 import pygame
-from classeBow import Bow
+from level.classeBow import Bow
 
 class Player(pygame.sprite.Sprite):
     def __init__(self, position):
