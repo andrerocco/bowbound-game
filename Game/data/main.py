@@ -51,10 +51,6 @@ while True:
     
     display_surface = level.run(event_listener) # Executa o nível atual
     
-    # x_pos = int((screen.get_width() - display_surface.get_width()) / 2) # Centraliza a superfície do nível na tela
-    # y_pos = int((screen.get_height() - display_surface.get_height()) / 2) # Centraliza a superfície do nível na tela
-    
-
     screen.blit(display_surface, constants.surface_offset) # Desenha a superfície do nível na tela
     display_surface.fill('black') # Pinta a superfície de preto (para evitar rastros de imagem)
     
