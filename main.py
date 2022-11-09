@@ -40,7 +40,6 @@ while True:
                     pygame.display.quit()
                     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.RESIZABLE)
                     pygame.display.init()
-
     pygame.display.flip()
 
     """ Conteúdo do jogo """
