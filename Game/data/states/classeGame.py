@@ -3,13 +3,21 @@ import os, time, pygame
 class Game():
     def __init__(self):
         pygame.init()
-        self.__screen_width, self.screen_height = 800, 600
-        self.__screen = pygame.display.set_mode((self.screen_width, self.screen_height))
-        self.__running,self.__playing = True, True
-        self.__actions = {'up':False, 'down':False, 'left':False, 'right':False, "action1":False, "action2":False, "start":False}
+        self.__screen_width, self.__screen_height = 800, 600
+        self.__screen = pygame.display.set_mode((self.__screen_width, self.__screen_height))
+        self.__running, self.__playing = True, True
+        self.__actions = {'up': False, 'down': False, 'left': False, 'right': False, "action1": False, "action2": False, "start": False}
         self.__dt, self.__prev_time = 0, 0
         self.__state_stack = []
         self.__load_assets()
+
+    def __load_assets(self):
+        pass
+
+        """ self.assets_dir = os.path.join("assets")
+        self.sprite_dir = os.path.join(self.assets_dir, "sprites")
+        self.font_dir = os.path.join(self.assets_dir, "fonts")
+        self.font = pygame.font.Font(os.path.join(self.font_dir, "PressStart2P.ttf"), 28) """
 
     def game_loop(self):
         while self.__playing:
@@ -62,18 +70,6 @@ class Game():
         now = time.time()
         self.__dt = now - self.__prev_time
         self.__prev_time = now
-
-    def draw_text(self, surface, text, color, x, y):
-        text_surface = self.__font.render(text, True, color)
-        text_rect = text_surface.get_rect()
-        text_rect.center = (x, y)
-        surface.blit(text_surface, text_rect)
-
-    def __load_assets(self):
-        self.assets_dir = os.path.join("assets")
-        self.sprite_dir = os.path.join(self.assets_dir, "sprites")
-        self.font_dir = os.path.join(self.assets_dir, "fonts")
-        self.font = pygame.font.Font(os.path.join(self.font_dir, "PressStart2P.ttf"), 28)
 
     def reset_keys(self):
         for action in self.actions:
