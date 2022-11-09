@@ -1,6 +1,6 @@
 import pygame, sys
 import config
-from classeLevel import Level
+from level.classeLevel import Level
 
 # Setup geral
 pygame.init()

@@ -1,5 +1,5 @@
 import pygame
-from abstractBuildStructure import BuildStructure
+from ..build_structures.abstractBuildStructure import BuildStructure
 
 class Spike(BuildStructure):
     def __init__(self, position, width, height):

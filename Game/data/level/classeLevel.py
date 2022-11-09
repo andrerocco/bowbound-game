@@ -1,13 +1,13 @@
 import pygame
 import config
 from time import time
-from classeTile import Tile
-from classeSpike import Spike
-from classeTarget import Target
-from classePlayer import Player
-from classeExitDoor import ExitDoor
-#from abstractArrow import Arrow
-#from classeStandartArrow import StandartArrow
+
+from level.build_structures.classeTile import Tile
+from level.build_structures.classeTile import Tile
+from level.build_structures.classeSpike import Spike
+from level.build_structures.classeTarget import Target
+from level.build_structures.classeExitDoor import ExitDoor
+from level.classePlayer import Player
 from classeTimer import Timer
 
 class Level:

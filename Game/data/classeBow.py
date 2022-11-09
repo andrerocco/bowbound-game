@@ -1,16 +1,16 @@
 import pygame
-from os import path
+from finder import find_file
 from math import pi, atan2
-from abstractArrow import Arrow
-from arrows.classeStandartArrow import StandartArrow
-from arrows.classeBounceArrow import BounceArrow
-from arrows.classeFastArrow import FastArrow
+from level.arrows.abstractArrow import Arrow
+from level.arrows.classeStandartArrow import StandartArrow
+from level.arrows.classeBounceArrow import BounceArrow
+from level.arrows.classeFastArrow import FastArrow
 
 
 class Bow():
     def __init__(self, initial_position):
         # Atributos padrões
-        self.__image = pygame.image.load(path.join('gun.png')).convert() # Carrega a imagem do arco (que tem fundo preto)
+        self.__image = pygame.image.load(find_file('gun.png')).convert() # Carrega a imagem do arco (que tem fundo preto)
         self.__image.set_colorkey((0,0,0)) # Define a cor preta como transparente
         self.__image = pygame.transform.scale(self.__image, (58, 8)) # Redimensiona a imagem do arco
         self.__rect = self.__image.get_rect(center=initial_position)
