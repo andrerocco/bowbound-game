@@ -19,9 +19,7 @@ class Bow():
         self.__arrows = [BounceArrow(), StandartArrow(), FastArrow()]
         
     
-    def get_rotated_image(self, player_position):
-        cursor_position = pygame.mouse.get_pos()
-        
+    def get_rotated_image(self, player_position, cursor_position):
         # Calcula o ângulo entre o centro do jogador (ponto pivô de rotação da arma) e o cursor
         relative_position = pygame.Vector2(cursor_position) - pygame.Vector2(player_position)
         angle_degrees = (180 / pi) * (-atan2(relative_position[1], relative_position[0]))
