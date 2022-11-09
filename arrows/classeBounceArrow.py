@@ -1,9 +1,9 @@
-import pygame
 from abstractArrow import Arrow
+from os import path
 
 class BounceArrow(Arrow):
     def __init__(self):
-        IMAGE_PATH = './arrow.png'
+        IMAGE_PATH = path.join('arrow.png')
 
         super().__init__(IMAGE_PATH, 10, 15, 0.2)
 

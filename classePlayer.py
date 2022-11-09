@@ -6,99 +6,99 @@ class Player(pygame.sprite.Sprite):
         super().__init__()
 
         # Atributos padrões
-        self.image = pygame.Surface((27,54))
-        self.image.fill('red')
-        self.rect = self.image.get_rect(midbottom=position)
+        self.__image = pygame.Surface((27,54))
+        self.__image.fill('red')
+        self.__rect = self.__image.get_rect(midbottom=position)
 
         # Mudanças de posição
-        self.precise_rect_position_x = self.rect.x
+        self.__precise_rect_position_x = self.__rect.x
         
         # Velocidades
-        self.delta_position = pygame.Vector2(0, 0)
+        self.__delta_position = pygame.Vector2(0, 0)
 
-        self.knockback_speed = pygame.Vector2(0, 0)
-        self.walking_speed = 0
-        self.max_walking_speed = 5
+        self.__knockback_speed = pygame.Vector2(0, 0)
+        self.__walking_speed = 0
+        self.__max_walking_speed = 5
 
         # Acelerações
-        self.gravity = 0.45
-        self.acceleration = pygame.Vector2(0, self.gravity)
-        self.ground_friction = 0.75 # Desaceleração do chão em porcentagem
-        self.air_friction = 0.98 # Desaceleração do ar em porcentagem
+        self.__gravity = 0.45
+        self.__acceleration = pygame.Vector2(0, self.__gravity)
+        self.__ground_friction = 0.75 # Desaceleração do chão em porcentagem
+        self.__air_friction = 0.98 # Desaceleração do ar em porcentagem
         
         # Forças
-        self.input_strength = 0.6 # Altera a força do input do jogador
-        self.knockback_strength = 15 # Altera a força do knockback
-        self.jump_strength = 6 # Altera a força do pulo
+        self.__input_strength = 0.6 # Altera a força do input do jogador
+        self.__knockback_strength = 15 # Altera a força do knockback
+        self.__jump_strength = 6 # Altera a força do pulo
 
         # Atributos de input
-        self.thrust = 0
+        self.__thrust = 0
 
         # Atributos de estado
-        self.jumping_status = False
-        self.on_ground_status = True
-        self.facing_right_status = True # Utilizado para definir a direção da textura do jogador
+        self.__jumping_status = False
+        self.__on_ground_status = True
+        self.__facing_right_status = True # Utilizado para definir a direção da textura do jogador
 
         # Arco
-        self.bow = Bow(self.rect.center)
+        self.__bow = Bow(self.__rect.center)
 
     """ MOVIMENTAÇÃO """
 
     def jump(self):
-        self.delta_position.y = -self.jump_strength
-        self.jumping_status = True
-        self.on_ground_status = False
+        self.__delta_position.y = -self.__jump_strength
+        self.__jumping_status = True
+        self.__on_ground_status = False
 
     def movement_input(self):
         keys = pygame.key.get_pressed()
 
         # Movimento horizontal
         if keys[pygame.K_RIGHT] or keys[pygame.K_d]:
-            self.thrust = 1
-            self.facing_right_status = True
+            self.__thrust = 1
+            self.__facing_right_status = True
         if keys[pygame.K_LEFT] or keys[pygame.K_a]:
-            self.thrust = -1
-            self.facing_right_status = False
+            self.__thrust = -1
+            self.__facing_right_status = False
         
         # Se o jogador não estiver pressionando esquerda ou direita
         if not (keys[pygame.K_RIGHT] or keys[pygame.K_d]) and not (keys[pygame.K_LEFT] or keys[pygame.K_a]):
-            self.thrust = 0
+            self.__thrust = 0
 
-        self.acceleration.x = (self.input_strength * self.thrust)
+        self.__acceleration.x = (self.__input_strength * self.__thrust)
 
         # Movimento vertical
-        if (keys[pygame.K_UP] or keys[pygame.K_w]) and self.jumping_status is False:
+        if (keys[pygame.K_UP] or keys[pygame.K_w]) and self.__jumping_status is False:
             self.jump()
 
     def apply_accceleration(self):
-        temp_speed_result = self.delta_position.x + self.acceleration.x
+        temp_speed_result = self.__delta_position.x + self.__acceleration.x
 
         # Se a velocidade for maior que a máxima de caminhada e o jogador estiver pressionando a tecla de movimento na mesma direção, não entra na condição
-        if not (temp_speed_result > self.max_walking_speed and self.thrust == 1) and not (temp_speed_result < -self.max_walking_speed and self.thrust == -1):
-            self.delta_position.x += self.acceleration.x
+        if not (temp_speed_result > self.__max_walking_speed and self.__thrust == 1) and not (temp_speed_result < -self.__max_walking_speed and self.thrust == -1):
+            self.__delta_position.x += self.__acceleration.x
         
         # Aplica a aceleração da gravidade
-        self.delta_position.y += self.acceleration.y
+        self.__delta_position.y += self.__acceleration.y
 
     def apply_friction(self):
-        if self.on_ground_status and self.thrust == 0:
-            self.delta_position.x = int(self.delta_position.x * self.ground_friction * 1000)/1000 # Arredonda para 4 pontos de precisão
-        elif self.on_ground_status and abs(self.delta_position.x) > self.max_walking_speed:
-            self.delta_position.x = int(self.delta_position.x * self.ground_friction * 1000)/1000 # Arredonda para 4 pontos de precisão
+        if self.__on_ground_status and self.__thrust == 0:
+            self.__delta_position.x = int(self.__delta_position.x * self.__ground_friction * 1000)/1000 # Arredonda para 4 pontos de precisão
+        elif self.__on_ground_status and abs(self.__delta_position.x) > self.__max_walking_speed:
+            self.__delta_position.x = int(self.__delta_position.x * self.__ground_friction * 1000)/1000 # Arredonda para 4 pontos de precisão
 
-        if not self.on_ground_status:
-            self.delta_position.x = int(self.delta_position.x * self.air_friction * 1000)/1000 # Arredonda para 4 pontos de precisão
+        if not self.__on_ground_status:
+            self.__delta_position.x = int(self.__delta_position.x * self.__air_friction * 1000)/1000 # Arredonda para 4 pontos de precisão
 
     def knockback(self, target_position, hold_factor: float = 1):
-        self.on_ground_status = False
+        self.__on_ground_status = False
 
         # Calcula a direção do knockback
         direction = pygame.Vector2(target_position) - pygame.Vector2(self.rect.center)
         direction = direction.normalize()
 
         # Aplica o knockback
-        knockback_factor = self.knockback_strength * hold_factor
-        self.delta_position = -(direction * knockback_factor)
+        knockback_factor = self.__knockback_strength * hold_factor
+        self.__delta_position = -(direction * knockback_factor)
 
     def calculate_speed(self):
         # Aplica a aceleração do input
@@ -108,17 +108,17 @@ class Player(pygame.sprite.Sprite):
         # Aplica a fricção na aceleração horizontal
         self.apply_friction()
 
-        return self.delta_position
+        return self.__delta_position
 
     def move(self, delta_speed):
         dx, dy = delta_speed
 
         # Movimento x
-        self.precise_rect_position_x += dx # A posição precisa será float
-        self.rect.x = int(self.precise_rect_position_x) # A posição recebida pelo retângulo precisa ser inteira para posicionar o pixel
+        self.__precise_rect_position_x += dx # A posição precisa será float
+        self.__rect.x = int(self.__precise_rect_position_x) # A posição recebida pelo retângulo precisa ser inteira para posicionar o pixel
 
         # Movimento y
-        self.rect.y += dy
+        self.__rect.y += dy
 
     """ COLISÃO """
     # Colide a próxima posição do objeto e retorna a nova posição colidida em uma tupla (collided_dx, collided_dy)
@@ -128,23 +128,23 @@ class Player(pygame.sprite.Sprite):
         for tile in collide_with.sprites():
             # Colisão horizontal
             if tile.rect.colliderect(self.rect.x + dx, self.rect.y, self.rect.width, self.rect.height): # Testa a colisão do deslocamento horizontal
-                if self.delta_position.x < 0: # Caso o jogador colida com um superfície pela esquerda
+                if self.__delta_position.x < 0: # Caso o jogador colida com um superfície pela esquerda
                     dx = tile.rect.right - self.rect.left
-                elif self.delta_position.x > 0: # Caso o jogador colida com um superfície pela direita
+                elif self.__delta_position.x > 0: # Caso o jogador colida com um superfície pela direita
                     dx = tile.rect.left - self.rect.right
                 else:
                     dx = 0
 
             # Colisão vertical
-            if tile.rect.colliderect(self.rect.x, self.rect.y + dy, self.rect.width, self.rect.height): # Testa a colisão do deslocamento vertical
-                if self.delta_position.y < 0 and (tile.rect.bottom <= self.rect.top): # Jogador "subindo"
-                    dy = (tile.rect.bottom - self.rect.top)
+            if tile.rect.colliderect(self.__rect.x, self.__rect.y + dy, self.__rect.width, self.__rect.height): # Testa a colisão do deslocamento vertical
+                if self.__delta_position.y < 0 and (tile.rect.bottom <= self.__rect.top): # Jogador "subindo"
+                    dy = (tile.rect.bottom - self.__rect.top)
                     
-                    self.delta_position.y = 0 # Reinicia a gravidade
-                if self.delta_position.y > 0 and (tile.rect.top >= self.rect.bottom): # Jogador "caindo"
-                    dy = (tile.rect.top - self.rect.bottom)
+                    self.__delta_position.y = 0 # Reinicia a gravidade
+                if self.__delta_position.y > 0 and (tile.rect.top >= self.__rect.bottom): # Jogador "caindo"
+                    dy = (tile.rect.top - self.__rect.bottom)
                     
-                    self.delta_position.y = 0 # Reinicia a gravidade  
+                    self.__delta_position.y = 0 # Reinicia a gravidade
                     self.set_jumping_status(False) # Define o status de pulo como falso
                     self.set_on_ground_status(True) # Define o status de estar no chão como verdadeiro
                 else:
@@ -158,8 +158,22 @@ class Player(pygame.sprite.Sprite):
         self.move(delta_speed) # Atualiza a posição do player
     
 
-    # Setters e Getters
+    # Setters
     def set_on_ground_status(self, status: bool):
-        self.on_ground_status = status
+        self.__on_ground_status = status
     def set_jumping_status(self, status: bool):
-        self.jumping_status = status
+        self.__jumping_status = status
+
+    # Getters
+    @property
+    def image(self):
+        return self.__image
+    @property
+    def rect(self):
+        return self.__rect
+    @property
+    def bow(self):
+        return self.__bow
+    @property
+    def thrust(self):
+        return self.__thrust
