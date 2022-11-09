@@ -1,5 +1,5 @@
 import pygame
-from ..build_structures.abstractBuildStructure import BuildStructure
+from level.build_structures.abstractBuildStructure import BuildStructure
 
 class Target(BuildStructure):
     def __init__(self, position, width, height):
