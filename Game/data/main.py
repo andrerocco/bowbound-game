@@ -33,10 +33,6 @@ while True:
             pygame.quit()
             exit()
         if event.type == pygame.VIDEORESIZE:
-            pygame.display.quit()
-            screen = pygame.display.set_mode((event.w, event.h), pygame.RESIZABLE)
-            pygame.display.init()
-            
             Settings.set_surface_offset(int((screen.get_width() - display_surface.get_width()) / 2),
                                         int((screen.get_height() - display_surface.get_height()) / 2))
         if event.type == pygame.KEYDOWN:

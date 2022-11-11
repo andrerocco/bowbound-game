@@ -1,13 +1,23 @@
 import os, time, pygame
 
+from Settings import Settings
+
+
 class Game():
     def __init__(self):
         pygame.init()
 
         # Configurações da janela
-        self.__screen_width = pygame.display.Info().current_w * 0.95
-        self.__screen_height = pygame.display.Info().current_h * 0.80
+        self.__fullscreen = False
+        self.__monitor_size = (pygame.display.Info().current_w, pygame.display.Info().current_h)
+        self.__screen_width = int(self.__monitor_size[0] * 0.95)
+        self.__screen_height = int(self.__monitor_size[1] * 0.80)
         self.__screen = pygame.display.set_mode((self.__screen_width, self.__screen_height), pygame.RESIZABLE)
+
+        pygame.display.set_caption("Speed Archer")
+
+        # Configurações da superfície de display
+        self.__display_surface = pygame.Surface((self.__screen_width, self.__screen_height))
 
         # Configurações do jogo
         self.__running, self.__playing = True, True
@@ -38,8 +48,23 @@ class Game():
             if event.type == pygame.QUIT:
                 self.__running = False
                 self.__playing = False
+            
+            if event.type == pygame.VIDEORESIZE:
+                self.__screen_resize()
 
             if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_F11:
+                    self.__fullscreen = not self.__fullscreen
+                    if self.__fullscreen:
+                        pygame.display.quit()
+                        self.__screen = pygame.display.set_mode(self.__monitor_size, pygame.FULLSCREEN)
+                        pygame.display.init()
+                    else:
+                        pygame.display.quit()
+                        self.__screen = pygame.display.set_mode((self.__screen_width, self.__screen_height), pygame.RESIZABLE)
+                        pygame.display.init()
+                    self.__screen_resize()
+
                 if event.key == pygame.K_UP:
                     self.__actions['up'] = True
                 if event.key == pygame.K_DOWN:
@@ -83,6 +108,12 @@ class Game():
         self.__dt = now - self.__prev_time
         self.__prev_time = now
 
+
+    def __screen_resize(self):
+        Settings.set_surface_offset(int((self.__screen.get_width() - self.__display_surface.get_width()) / 2),
+                                    int((self.__screen.get_height() - self.__display_surface.get_height()) / 2))
+
+
     def reset_keys(self):
         for action in self.actions:
             self.actions[action] = False
@@ -100,6 +131,20 @@ class Game():
     @property
     def state_stack(self):
         return self.__state_stack
+    @property
+    def screen_width(self):
+        return self.__screen_width
+    @property
+    def screen_height(self):
+        return self.__screen_height
+    @property
+    def display_surface(self):
+        return self.__display_surface
+    
+    # Setters
+    @display_surface.setter
+    def display_surface(self, display_surface):
+        self.__display_surface = display_surface
 
     
 """ if __name__ == "__main__":
