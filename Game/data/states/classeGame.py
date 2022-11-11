@@ -1,6 +1,7 @@
 import os, time, pygame
 
 from Settings import Settings
+from states.abstractState import State
 from states.stateTitleScreen import TitleScreen
 
 
@@ -128,11 +129,13 @@ class Game():
 
 
     # Métodos que alteram a state stack
-    def append_state(self, state):
+    def append_state(self, state: State):
         self.__state_stack.append(state)
+        self.reset_keys()
 
     def pop_state(self):
         self.__state_stack.pop()
+        self.reset_keys()
 
 
     # Getters
