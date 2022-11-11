@@ -67,7 +67,7 @@ class Player(pygame.sprite.Sprite):
         self.__acceleration.x = (self.__input_strength * self.__thrust)
 
         # Movimento vertical
-        if (keys[pygame.K_UP] or keys[pygame.K_w]) and self.__jumping_status is False:
+        if (keys[pygame.K_UP] or keys[pygame.K_w] or keys[pygame.K_SPACE]) and self.__jumping_status is False:
             self.jump()
 
     def apply_accceleration(self):
