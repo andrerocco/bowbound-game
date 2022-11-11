@@ -2,7 +2,7 @@ import pygame
 import config
 from time import time
 
-from singletonConstants import Constants
+from Settings import Settings
 from classeTimer import Timer
 from level.classePlayer import Player
 from level.arrows.classePiercingArrow import PiercingArrow
@@ -17,7 +17,6 @@ class Level:
     def __init__(self, level_data: dict):
         self.__level_data = level_data
         self.__level_map_matrix = level_data['tile_map']
-        self.__constants = Constants()
 
         # Superfície onde o nível será desenhado
         level_width = len(self.__level_map_matrix[0]) * config.level_tile_size
@@ -85,7 +84,7 @@ class Level:
         bow_x = player_x
         bow_y = player_y
         
-        rotated_bow_image = self.__player.sprite.bow.get_rotated_image(player_position, self.constants.mouse_pos)
+        rotated_bow_image = self.__player.sprite.bow.get_rotated_image(player_position, Settings.mouse_pos())
         rotated_bow_rect = rotated_bow_image.get_rect(center = (bow_x , bow_y))
 
         self.__display_surface.blit(rotated_bow_image, rotated_bow_rect)
@@ -99,7 +98,7 @@ class Level:
             pass
         
         else: # Caso o try tenha sucedido
-            target_position = self.constants.mouse_pos # Pega a posição do mouse
+            target_position = Settings.mouse_pos() # Pega a posição do mouse
 
             arrow.start_shot(player.rect.center, target_position, hold_factor) # Inicializa os atributos de posição da flecha
             self.__moving_arrows.append(arrow) # Adiciona a flecha na lista de flechas do level

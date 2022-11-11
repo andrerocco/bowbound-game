@@ -1,10 +1,12 @@
 import pygame
 from finder import find_file
 from math import pi, atan2
+
 from level.arrows.abstractArrow import Arrow
 from level.arrows.classeStandartArrow import StandartArrow
 from level.arrows.classeBounceArrow import BounceArrow
 from level.arrows.classeFastArrow import FastArrow
+from level.arrows.classePiercingArrow import PiercingArrow
 
 
 class Bow():
@@ -16,9 +18,9 @@ class Bow():
         self.__rect = self.__image.get_rect(center=initial_position)
 
         # Flechas
-        self.__arrows = [BounceArrow(), StandartArrow(), FastArrow()]
-        
-    
+        self.__arrows = [BounceArrow(), StandartArrow(), FastArrow(), PiercingArrow()]
+
+
     def get_rotated_image(self, player_position, cursor_position):
         # Calcula o ângulo entre o centro do jogador (ponto pivô de rotação da arma) e o cursor
         relative_position = pygame.Vector2(cursor_position) - pygame.Vector2(player_position)

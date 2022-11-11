@@ -1,7 +1,8 @@
 import pygame, sys
 import config
+
 from level.classeLevel import Level
-from singletonConstants import Constants
+from Settings import Settings
 
 # Setup geral
 pygame.init()
@@ -20,7 +21,10 @@ display_surface = level.display_surface # Superfície onde o nível será desenh
 
 # Informações da tela
 fullscreen = False
-constants = Constants()
+
+# Define as configurações globais
+Settings.set_surface_offset(int((screen.get_width() - display_surface.get_width()) / 2),
+                            int((screen.get_height() - display_surface.get_height()) / 2))
 
 while True:
     event_listener = pygame.event.get()
@@ -32,9 +36,13 @@ while True:
             pygame.display.quit()
             screen = pygame.display.set_mode((event.w, event.h), pygame.RESIZABLE)
             pygame.display.init()
+            
+            Settings.set_surface_offset(int((screen.get_width() - display_surface.get_width()) / 2),
+                                        int((screen.get_height() - display_surface.get_height()) / 2))
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_F11:
                 fullscreen = not fullscreen
+                
                 if fullscreen:
                     pygame.display.quit()
                     screen = pygame.display.set_mode(MONITOR_SIZE, pygame.FULLSCREEN)
@@ -43,15 +51,17 @@ while True:
                     pygame.display.quit()
                     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.RESIZABLE)
                     pygame.display.init()
-    
+
+                Settings.set_surface_offset(int((screen.get_width() - display_surface.get_width()) / 2),
+                                            int((screen.get_height() - display_surface.get_height()) / 2))
+
     pygame.display.flip()
-    constants.update_screen_offset(screen, display_surface)
 
     """ Conteúdo do jogo """
     
     display_surface = level.run(event_listener) # Executa o nível atual
     
-    screen.blit(display_surface, constants.surface_offset) # Desenha a superfície do nível na tela
+    screen.blit(display_surface, Settings.get_surface_offset()) # Desenha a superfície do nível na tela
     display_surface.fill('black') # Pinta a superfície de preto (para evitar rastros de imagem)
     
     """ Fim do conteúdo do jogo """
