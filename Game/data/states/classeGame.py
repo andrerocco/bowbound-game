@@ -1,6 +1,7 @@
 import os, time, pygame
 
 from Settings import Settings
+from states.stateTitleScreen import TitleScreen
 
 
 class Game():
@@ -25,8 +26,9 @@ class Game():
         self.__dt, self.__prev_time = 0, 0
         self.__state_stack = []
 
-        # Carrega os assets
+        # Carrega o jogo
         self.__load_assets()
+        self.__load_states()
 
     def __load_assets(self):
         pass
@@ -35,6 +37,10 @@ class Game():
         self.sprite_dir = os.path.join(self.assets_dir, "sprites")
         self.font_dir = os.path.join(self.assets_dir, "fonts")
         self.font = pygame.font.Font(os.path.join(self.font_dir, "PressStart2P.ttf"), 28) """
+    
+    def __load_states(self):
+        self.__title_screen = TitleScreen(self)
+        self.__state_stack.append(self.__title_screen)
 
     def run(self):
         while self.__playing:
@@ -97,10 +103,12 @@ class Game():
                     self.__actions['start'] = False
 
     def __update(self):
-        pass
+        self.__state_stack[-1].update(self.__dt, self.__actions)
 
     def __render(self):
-        # self.__screen.blit(pygame.transform.scale(self.__background, (self.screen_width, self.screen_height)), (0,0))
+        self.__display_surface.fill('black')
+        self.__state_stack[-1].render(self.__display_surface)
+        self.__screen.blit(self.__display_surface, Settings.get_surface_offset())
         pygame.display.flip()
 
     def __get_dt(self):
@@ -115,8 +123,8 @@ class Game():
 
 
     def reset_keys(self):
-        for action in self.actions:
-            self.actions[action] = False
+        for action in self.__actions:
+            self.__actions[action] = False
 
 
     # Métodos que alteram a state stack

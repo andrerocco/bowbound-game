@@ -3,15 +3,17 @@ from abc import ABC, abstractmethod
 
 class State(ABC):
     def __init__(self, game):
-        self.__game = game
+        self._game = game
         self.__prev_state = None
 
     @abstractmethod
-    def update(self, delta_time, actions):
+    def update(self, delta_time, actions) -> None:
+        # Irá implementar as atualizações dos elementos do estado
         pass
 
     @abstractmethod
-    def render(self):
+    def render(self, display_surface) -> None:
+        # Irá renderizar na tela os elementos atualizados em update()
         pass
 
     def enter_state(self):
