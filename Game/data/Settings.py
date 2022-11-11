@@ -8,10 +8,6 @@ class Settings:
     def mouse_pos():
         return (pygame.mouse.get_pos()[0] - Settings.__surface_offset[0], pygame.mouse.get_pos()[1] - Settings.__surface_offset[1])
 
-    """ @staticmethod
-    def set_surface_offset(x, y):
-        Settings.__surface_offset = (x, y) """
-
     @staticmethod
     def set_surface_offset(x, y):
         try:
