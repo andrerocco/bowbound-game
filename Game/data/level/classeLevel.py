@@ -5,6 +5,7 @@ from time import time
 from singletonConstants import Constants
 from classeTimer import Timer
 from level.classePlayer import Player
+from level.arrows.classePiercingArrow import PiercingArrow
 from level.build_structures.classeTile import Tile
 from level.build_structures.classeTile import Tile
 from level.build_structures.classeSpike import Spike
@@ -171,7 +172,12 @@ class Level:
             for target in self.__level_targets:
                 if arrow.rect.colliderect(target.rect):
                     target.kill()
-                    self.__moving_arrows.remove(arrow)
+                    """ Teleport Arrow """
+                    if isinstance(arrow, PiercingArrow):
+                        pass
+
+                    else:
+                        self.__moving_arrows.remove(arrow)
 
                     if len(self.__level_targets) == 0:
                         self.__level_exit_door.sprite.unlock()
