@@ -74,29 +74,29 @@ class Game():
 
                 if event.key == pygame.K_ESCAPE:
                     self.__actions['esc'] = True
-                if event.key == pygame.K_W or event.key == pygame.K_UP or event.key == pygame.K_SPACE:
+                if event.key == pygame.K_w or event.key == pygame.K_UP or event.key == pygame.K_SPACE:
                     self.__actions['up'] = True
-                if event.key == pygame.K_S or event.key == pygame.K_DOWN:
+                if event.key == pygame.K_s or event.key == pygame.K_DOWN:
                     self.__actions['down'] = True
-                if event.key == pygame.K_A or event.key == pygame.K_LEFT:
+                if event.key == pygame.K_a or event.key == pygame.K_LEFT:
                     self.__actions['left'] = True
-                if event.key == pygame.K_D or event.key == pygame.K_RIGHT:
+                if event.key == pygame.K_d or event.key == pygame.K_RIGHT:
                     self.__actions['right'] = True
-                if event.key == pygame.K_R:
+                if event.key == pygame.K_r:
                     self.__actions['reset'] = True
 
             if event.type == pygame.KEYUP:
                 if event.key == pygame.K_ESCAPE:
                     self.__actions['esc'] = False
-                if event.key == pygame.K_W or event.key == pygame.K_UP or event.key == pygame.K_SPACE:
+                if event.key == pygame.K_w or event.key == pygame.K_UP or event.key == pygame.K_SPACE:
                     self.__actions['up'] = False
-                if event.key == pygame.K_S or event.key == pygame.K_DOWN:
+                if event.key == pygame.K_s or event.key == pygame.K_DOWN:
                     self.__actions['down'] = False
-                if event.key == pygame.K_A or event.key == pygame.K_LEFT:
+                if event.key == pygame.K_a or event.key == pygame.K_LEFT:
                     self.__actions['left'] = False
-                if event.key == pygame.K_D or event.key == pygame.K_RIGHT:
+                if event.key == pygame.K_d or event.key == pygame.K_RIGHT:
                     self.__actions['right'] = False
-                if event.key == pygame.K_R:
+                if event.key == pygame.K_r:
                     self.__actions['reset'] = False
 
     def __update(self):
