@@ -107,8 +107,7 @@ class Game():
         self.__state_stack[-1].update(self.__dt, self.__actions)
 
     def __render(self):
-        self.__display_surface.fill('black')
-        self.__state_stack[-1].render(self.__display_surface)
+        self.__state_stack[-1].render(self.__display_surface) # Renderiza a state atual
         self.__screen.blit(self.__display_surface, Settings.get_surface_offset())
         pygame.display.flip()
 
