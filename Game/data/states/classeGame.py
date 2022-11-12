@@ -23,7 +23,7 @@ class Game():
 
         # Configurações do jogo
         self.__running, self.__playing = True, True
-        self.__actions = {'up': False, 'down': False, 'left': False, 'right': False, "action1": False, "action2": False, "start": False}
+        self.__actions = {'esc': False, 'up': False, 'down': False, 'left': False, 'right': False, 'reset': False}
         self.__dt, self.__prev_time = 0, 0
         self.__state_stack = []
 
@@ -146,6 +146,9 @@ class Game():
     @property
     def display_surface(self):
         return self.__display_surface
+    @property
+    def actions(self):
+        return self.__actions
     
     # Setters
     @display_surface.setter

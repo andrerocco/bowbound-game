@@ -20,10 +20,10 @@ class State(ABC):
         pass
 
     def enter_state(self):
-        if len(self.game.state_stack) > 1:
+        if len(self._game.state_stack) > 1:
             self.__prev_state = self.__game.state_stack[-1] # Salva o estado anterior em prev_state
         
-        self.__game.append_state(self) # Adiciona o estado atual na pilha de estados
+        self._game.append_state(self) # Adiciona o estado atual na pilha de estados
 
     def exit_state(self):
-        self.__game.pop_state()
+        self._game.pop_state()

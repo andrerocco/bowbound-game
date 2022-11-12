@@ -12,7 +12,7 @@ class LevelPlaying(State):
 
     def update(self, delta_time, actions):
         # Se o jogador pressionar ESC, entra no estado de pausa
-        if actions['esc']:
+        if self._game.actions['esc']:
             pause_state = LevelPaused(self._game)
             pause_state.enter_state()
 
