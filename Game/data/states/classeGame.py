@@ -72,36 +72,32 @@ class Game():
                         pygame.display.init()
                     self.__screen_resize()
 
-                if event.key == pygame.K_UP:
-                    self.__actions['up'] = True
-                if event.key == pygame.K_DOWN:
-                    self.__actions['down'] = True
-                if event.key == pygame.K_LEFT:
-                    self.__actions['left'] = True
-                if event.key == pygame.K_RIGHT:
-                    self.__actions['right'] = True
-                if event.key == pygame.K_SPACE:
-                    self.__actions['action1'] = True
-                if event.key == pygame.K_RETURN:
-                    self.__actions['action2'] = True
                 if event.key == pygame.K_ESCAPE:
-                    self.__actions['start'] = True
+                    self.__actions['esc'] = True
+                if event.key == pygame.K_W or event.key == pygame.K_UP or event.key == pygame.K_SPACE:
+                    self.__actions['up'] = True
+                if event.key == pygame.K_S or event.key == pygame.K_DOWN:
+                    self.__actions['down'] = True
+                if event.key == pygame.K_A or event.key == pygame.K_LEFT:
+                    self.__actions['left'] = True
+                if event.key == pygame.K_D or event.key == pygame.K_RIGHT:
+                    self.__actions['right'] = True
+                if event.key == pygame.K_R:
+                    self.__actions['reset'] = True
 
             if event.type == pygame.KEYUP:
-                if event.key == pygame.K_UP:
-                    self.__actions['up'] = False
-                if event.key == pygame.K_DOWN:
-                    self.__actions['down'] = False
-                if event.key == pygame.K_LEFT:
-                    self.__actions['left'] = False
-                if event.key == pygame.K_RIGHT:
-                    self.__actions['right'] = False
-                if event.key == pygame.K_SPACE:
-                    self.__actions['action1'] = False
-                if event.key == pygame.K_RETURN:
-                    self.__actions['action2'] = False
                 if event.key == pygame.K_ESCAPE:
-                    self.__actions['start'] = False
+                    self.__actions['esc'] = False
+                if event.key == pygame.K_W or event.key == pygame.K_UP or event.key == pygame.K_SPACE:
+                    self.__actions['up'] = False
+                if event.key == pygame.K_S or event.key == pygame.K_DOWN:
+                    self.__actions['down'] = False
+                if event.key == pygame.K_A or event.key == pygame.K_LEFT:
+                    self.__actions['left'] = False
+                if event.key == pygame.K_D or event.key == pygame.K_RIGHT:
+                    self.__actions['right'] = False
+                if event.key == pygame.K_R:
+                    self.__actions['reset'] = False
 
     def __update(self):
         self.__state_stack[-1].update(self.__dt, self.__actions)
