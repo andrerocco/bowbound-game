@@ -15,4 +15,4 @@ class LevelPaused(State):
             self.exit_state()
 
     def render(self, display_surface):
-        self.__display_surface.fill('black') # Limpa a tela
+        display_surface.fill('black') # Limpa a tela
