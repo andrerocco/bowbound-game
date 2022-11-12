@@ -15,8 +15,6 @@ class LevelPlaying(State):
         if actions['esc']:
             pause_state = LevelPaused(self._game)
             pause_state.enter_state()
-        
-        self._game.reset_keys() # Ver se é necessário
 
     def render(self, display_surface):
         pass

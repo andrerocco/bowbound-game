@@ -10,7 +10,7 @@ class TitleScreen(State):
         self.__buttons = pygame.sprite.Group()
     
     def update(self, delta_time, actions):
-        self._game.reset_keys()
+        pass
 
     def render(self, display_surface):
         font = pygame.font.SysFont(None, 24)

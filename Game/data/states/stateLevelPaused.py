@@ -14,7 +14,5 @@ class LevelPaused(State):
         if actions['esc']:
             self.exit_state()
 
-        self._game.reset_keys() # Ver se é necessário
-
     def render(self, display_surface):
         self.__display_surface.fill('black') # Limpa a tela
