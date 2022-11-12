@@ -1,5 +1,6 @@
 import pygame
 from states.abstractState import State
+from states.stateLevelPlaying import LevelPlaying
 
 
 class TitleScreen(State):
@@ -11,8 +12,13 @@ class TitleScreen(State):
     
     def update(self, delta_time, actions):
         pass
+        #if self._game.actions['reset']:
+        #    level_playing_state = LevelPlaying(self._game)
+        #    level_playing_state.enter_state()
 
     def render(self, display_surface):
+        display_surface.fill('black') # Limpa a tela
+
         font = pygame.font.SysFont(None, 24)
         text = font.render('Menu', True, (255, 255, 255))
         

@@ -21,7 +21,7 @@ class State(ABC):
 
     def enter_state(self):
         if len(self._game.state_stack) > 1:
-            self.__prev_state = self.__game.state_stack[-1] # Salva o estado anterior em prev_state
+            self.__prev_state = self._game.state_stack[-1] # Salva o estado anterior em prev_state
         
         self._game.append_state(self) # Adiciona o estado atual na pilha de estados
 
