@@ -156,9 +156,3 @@ class Game():
     @display_surface.setter
     def display_surface(self, display_surface):
         self.__display_surface = display_surface
-
-    
-""" if __name__ == "__main__":
-    g = Game()
-while g.running:
-    g.run() """
