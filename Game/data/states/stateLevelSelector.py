@@ -13,4 +13,4 @@ class LevelSelector(State):
         pass
 
     def render(self, display_surface):
-        pass
+        display_surface.fill((0, 0, 0)) # Limpa a tela
