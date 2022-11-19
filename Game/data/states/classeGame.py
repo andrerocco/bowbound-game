@@ -1,6 +1,8 @@
 import os, time, pygame
 
 from Settings import Settings
+import finder
+
 from states.abstractState import State
 from states.stateTitleScreen import TitleScreen
 
@@ -23,7 +25,9 @@ class Game():
 
         # Configurações do jogo
         self.__running, self.__playing = True, True
-        self.__actions = {'esc': False, 'up': False, 'down': False, 'left': False, 'right': False, 'reset': False}
+        self.__actions = {'esc': False, 'reset': False,
+                          'up': False, 'down': False, 'left': False, 'right': False,
+                          'mouse_left': False, 'mouse_right': False}
         self.__dt, self.__prev_time = 0, 0
         self.__state_stack = []
 
@@ -34,6 +38,13 @@ class Game():
     def __load_assets(self):
         pass
 
+        self.__fonts_path = {
+            'title': finder.find_file('Fibberish.ttf'),
+            'text': finder.find_file('PixelOperatorHB.ttf')
+        }
+        self.__images = {
+            'background': pygame.image.load(finder.find_file('background.png')).convert_alpha(),
+        }
         """ self.assets_dir = os.path.join("assets")
         self.sprite_dir = os.path.join(self.assets_dir, "sprites")
         self.font_dir = os.path.join(self.assets_dir, "fonts")
@@ -59,7 +70,7 @@ class Game():
             if event.type == pygame.VIDEORESIZE:
                 self.__screen_resize()
 
-            if event.type == pygame.KEYDOWN:
+            if event.type == pygame.KEYDOWN: # Inputs do teclado (pressionar tecla)
                 if event.key == pygame.K_F11:
                     self.__fullscreen = not self.__fullscreen
                     if self.__fullscreen:
@@ -85,7 +96,7 @@ class Game():
                 if event.key == pygame.K_r:
                     self.__actions['reset'] = True
 
-            if event.type == pygame.KEYUP:
+            if event.type == pygame.KEYUP: # Inputs do teclado (soltar tecla)
                 if event.key == pygame.K_ESCAPE:
                     self.__actions['esc'] = False
                 if event.key == pygame.K_w or event.key == pygame.K_UP or event.key == pygame.K_SPACE:
@@ -98,6 +109,18 @@ class Game():
                     self.__actions['right'] = False
                 if event.key == pygame.K_r:
                     self.__actions['reset'] = False
+
+            if event.type == pygame.MOUSEBUTTONDOWN: # Inputs do mouse (pressionar botão)
+                if event.button == 1:
+                    self.__actions['mouse_left'] = True
+                if event.button == 3:
+                    self.__actions['mouse_right'] = True
+            
+            if event.type == pygame.MOUSEBUTTONUP: # Inputs do mouse (soltar botão)
+                if event.button == 1:
+                    self.__actions['mouse_left'] = False
+                if event.button == 3:
+                    self.__actions['mouse_right'] = False
 
     def __update(self):
         self.__state_stack[-1].update(self.__dt, self.__actions)
@@ -149,6 +172,17 @@ class Game():
     @property
     def actions(self):
         return self.__actions
+
+    def get_mouse_pos(self):
+        return Settings.mouse_pos()
+    
+    # Assets
+    @property
+    def fonts_path(self):
+        return self.__fonts_path
+    @property
+    def images(self):
+        return self.__images
     
     # Setters
     @display_surface.setter
