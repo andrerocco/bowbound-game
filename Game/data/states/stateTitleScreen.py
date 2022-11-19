@@ -20,8 +20,6 @@ class TitleScreen(State):
         self.SELECT_3 = Button(self._game.fonts_path['text'], 50, (255, 255, 255), 'Ajuda')
     
     def update(self, delta_time, actions):
-        pass
-
         if self._game.actions['mouse_left']:
             if self.SELECT_1.check_for_input(self._game.get_mouse_pos()):
                 self._game.state_stack.append(LevelSelector(self._game))
