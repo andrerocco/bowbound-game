@@ -5,9 +5,9 @@ levels = [{
 'XXXXXXXXXXXXXXXXXXXXXXXXX',
 'X                X      X',
 'X        O       X      X',
-'XXXX             X   O  X',
+'XXXX             X      X',
 'X                X      X',
-'X        XX      X      X',
+'X O      XX      X      X',
 'X        X              X',
 'X        X              X',
 'X        X              X',
@@ -25,9 +25,9 @@ levels = [{
 '                         ',
 '     X             X     ',
 '    X               X    ',
-'    X      X        X    ',
+'    X      X    O   X    ',
 '     X             X     ',
-' XX         P         XX ',
+' XX         P        DXX ',
 'XXXXXXXXXXXXXXXXXXXXXXXXX']
 }]
 

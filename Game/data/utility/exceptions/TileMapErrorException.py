@@ -1,0 +1,2 @@
+class TileMapErrorException(Exception):
+    pass

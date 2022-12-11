@@ -1,0 +1,2 @@
+class NivelNaoExisteException(Exception):
+    pass

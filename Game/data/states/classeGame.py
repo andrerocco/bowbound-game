@@ -1,12 +1,10 @@
 import os, time, pygame
 
-from Settings import Settings
-import finder
-
+from singletons.singletonAssets import Assets
 from states.abstractState import State
-from states.stateTitleScreen import TitleScreen
 
-from singletonAssets import Assets
+from states.stateTitleScreen import TitleScreen
+from states.stateInputName import InputName
 
 
 class Game():
@@ -20,17 +18,15 @@ class Game():
         self.__initial_screen_height = int(self.__monitor_size[1] * 0.80)
         self.__screen = pygame.display.set_mode((self.__initial_screen_width, self.__initial_screen_height), pygame.RESIZABLE)
 
-        pygame.display.set_caption("Speed Archer")
+        pygame.display.set_caption("Bowbound")
 
         # Configurações da superfície de display
         self.__display_surface = pygame.Surface((self.__initial_screen_width, self.__initial_screen_height))
 
         # Configurações do jogo
         self.__running, self.__playing = True, True
-        self.__actions = {'esc': False, 'reset': False,
-                          'up': False, 'down': False, 'left': False, 'right': False,
-                          'mouse_left': False, 'mouse_right': False}
         self.__dt, self.__prev_time = 0, 0
+        self.__clock = pygame.time.Clock()
         self.__state_stack = []
 
         # Carrega o jogo
@@ -39,10 +35,14 @@ class Game():
 
     def __load_assets(self):
         Assets().load_assets() # Inicializa o singleton de assets
+        try:
+            pygame.display.set_icon(Assets().interface['game-icon'])
+        except:
+            print("O ícone do jogo não pode ser carregado")
     
     def __load_states(self):
-        self.__title_screen = TitleScreen(self)
-        self.__state_stack.append(self.__title_screen)
+        self.__input_name = InputName(self)
+        self.__state_stack.append(self.__input_name)
 
     def run(self):
         while self.__playing:
@@ -50,6 +50,8 @@ class Game():
             self.__update()
             self.__render()
             self.__get_dt()
+            
+            self.__clock.tick(60) # Limita o FPS
 
     def __get_events(self):
         for event in pygame.event.get():
@@ -73,51 +75,17 @@ class Game():
                         pygame.display.init()
                     self.__screen_resize()
 
-                if event.key == pygame.K_ESCAPE:
-                    self.__actions['esc'] = True
-                if event.key == pygame.K_w or event.key == pygame.K_UP or event.key == pygame.K_SPACE:
-                    self.__actions['up'] = True
-                if event.key == pygame.K_s or event.key == pygame.K_DOWN:
-                    self.__actions['down'] = True
-                if event.key == pygame.K_a or event.key == pygame.K_LEFT:
-                    self.__actions['left'] = True
-                if event.key == pygame.K_d or event.key == pygame.K_RIGHT:
-                    self.__actions['right'] = True
-                if event.key == pygame.K_r:
-                    self.__actions['reset'] = True
+            self.__update_state_actions(event)
 
-            if event.type == pygame.KEYUP: # Inputs do teclado (soltar tecla)
-                if event.key == pygame.K_ESCAPE:
-                    self.__actions['esc'] = False
-                if event.key == pygame.K_w or event.key == pygame.K_UP or event.key == pygame.K_SPACE:
-                    self.__actions['up'] = False
-                if event.key == pygame.K_s or event.key == pygame.K_DOWN:
-                    self.__actions['down'] = False
-                if event.key == pygame.K_a or event.key == pygame.K_LEFT:
-                    self.__actions['left'] = False
-                if event.key == pygame.K_d or event.key == pygame.K_RIGHT:
-                    self.__actions['right'] = False
-                if event.key == pygame.K_r:
-                    self.__actions['reset'] = False
-
-            if event.type == pygame.MOUSEBUTTONDOWN: # Inputs do mouse (pressionar botão)
-                if event.button == 1:
-                    self.__actions['mouse_left'] = True
-                if event.button == 3:
-                    self.__actions['mouse_right'] = True
-            
-            if event.type == pygame.MOUSEBUTTONUP: # Inputs do mouse (soltar botão)
-                if event.button == 1:
-                    self.__actions['mouse_left'] = False
-                if event.button == 3:
-                    self.__actions['mouse_right'] = False
+    def __update_state_actions(self, event):
+        self.__state_stack[-1].update_actions(event)
 
     def __update(self):
-        self.__state_stack[-1].update(self.__dt, self.__actions)
+        self.__state_stack[-1].update(self.__dt)
 
     def __render(self):
         self.__state_stack[-1].render(self.__display_surface) # Renderiza a state atual
-        self.__screen.blit(self.__display_surface, Settings.get_surface_offset())
+        self.__screen.blit(self.__display_surface, (0, 0))
         pygame.display.flip()
 
     def __get_dt(self):
@@ -125,29 +93,20 @@ class Game():
         self.__dt = now - self.__prev_time
         self.__prev_time = now
 
-
     def __screen_resize(self):
         # Muda o tamanho da superfície de display
         self.__display_surface = pygame.Surface((self.__screen.get_width(), self.__screen.get_height()))
-        # Notifica a classe Settings do novo tamanho da tela
-        Settings.set_surface_offset(int((self.__screen.get_width() - self.__display_surface.get_width()) / 2),
-                                    int((self.__screen.get_height() - self.__display_surface.get_height()) / 2))
-
-
-    def reset_keys(self):
-        for action in self.__actions:
-            self.__actions[action] = False
-
 
     # Métodos que alteram a state stack
     def append_state(self, state: State):
+        self.__reset_state_actions()
         self.__state_stack.append(state)
-        self.reset_keys()
 
     def pop_state(self):
         self.__state_stack.pop()
-        self.reset_keys()
 
+    def __reset_state_actions(self):
+        self.__state_stack[-1].restart_actions()
 
     # Getters
     @property
@@ -163,8 +122,8 @@ class Game():
     def display_surface(self):
         return self.__display_surface
     @property
-    def actions(self):
-        return self.__actions
+    def state_stack(self):
+        return self.__state_stack
     
     # Setters
     @display_surface.setter

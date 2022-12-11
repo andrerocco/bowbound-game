@@ -1,11 +1,14 @@
+from singletons.singletonAssets import Assets
 from level.arrows.abstractArrow import Arrow
-from finder import find_file
+
 
 class BounceArrow(Arrow):
     def __init__(self):
-        IMAGE_PATH = find_file('arrow.png')
+        IMAGE = Assets().level_images['arrows']['bounce']
+        ICON_IMAGE = Assets().interface['arrows']['bounce']
+        BORDER_ICON_IMAGE = Assets().interface['bordered-arrows']['bounce']
 
-        super().__init__(IMAGE_PATH, 10, 15, 0.2)
+        super().__init__(10, 15, 0.2, IMAGE, ICON_IMAGE, BORDER_ICON_IMAGE)
 
         self.__bounce_count = 0
         self.__max_bounce_count = 2
