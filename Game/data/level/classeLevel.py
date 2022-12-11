@@ -153,7 +153,12 @@ class Level:
                     if isinstance(arrow, PiercingArrow):
                         pass
                     else:
-                        self.__moving_arrows.remove(arrow)
+                        # Fix provisório de um bug "ValueError: list.remove(x): x not in list"
+                        try:
+                            self.__moving_arrows.remove(arrow)
+                        except ValueError:
+                            if arrow in self.__stuck_arrows:
+                                self.__stuck_arrows.remove(arrow)
 
     def __handle_stuck_arrows(self, player: pygame.sprite, stuck_arrows: list):
         for arrow in stuck_arrows:
