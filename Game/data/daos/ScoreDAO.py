@@ -1,7 +1,16 @@
 from daos.abstractDAO import AbstractDAO
+from utility.finder import find_file
+from os import path
+
 
 class ScoreDAO(AbstractDAO):
-    def __init__(self, datasource='scores.json'):
+    def __init__(self, filename='scores.json'):
+        try:
+            datasource = find_file(filename) # Verifica se o arquivo com o nome passado existe
+        except:
+            # Volta duas pastas (daos, data) e acessa a pasta maps para criar o arquivo
+            datasource = path.join(path.dirname(path.dirname(path.dirname(__file__))), 'scores', filename)
+        
         super().__init__(cache={}, datasource=datasource)
 
     def add(self, level_name: str, player_name: str, time: float):
