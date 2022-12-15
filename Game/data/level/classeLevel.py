@@ -88,21 +88,6 @@ class Level:
                     player_sprite = Player((player_origin_x, player_origin_y), self.__level_arrows)
                     self.__player.add(player_sprite)
 
-    """ def display_arrow_quantity(self, surface, player):
-        font = pygame.font.SysFont('arial', 30, True, False)  # Edita a fonte
-        text = font.render(f'Quantidade de flechas: {len(player.gun.arrows)}', True, (0, 0, 0))  # Edita o texto
-        surface.blit(text, (10, 10))  # Mostra na tela
-
-    def display_timer(self, surface):
-        font = pygame.font.SysFont('arial', 30, True, False)  # Edita a fonte
-
-        time_seconds = self.__timer.get_time_from_start()
-        minutes, seconds = divmod(time_seconds, 60)
-        formated_time = "{:0>2}:{:05.2f}".format(int(minutes),seconds)
-
-        text = font.render(f'Tempo: {formated_time}', True, (0, 0, 0))  # Edita o texto
-        surface.blit(text, (400, 10))  # Mostra na tela """
-
     def __update_player(self, player, actions):
         # Gera uma tupla com os valores de deslocamento calculados baseados no player
         delta_speed = player.calculate_speed(actions)
@@ -240,7 +225,6 @@ class Level:
             self.__display_surface.blit(arrow.image, arrow.rect)
             
         return self.__display_surface
-
 
     # Getters
     @property
