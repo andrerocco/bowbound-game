@@ -42,7 +42,8 @@ class LevelPaused(State):
                 self._actions['mouse_left'] = False        
 
     def update(self, delta_time):
-        """ PROBLEMA -> O botão deve ser identificado quando o mouse sobe, não quando ele está pressionado """
+        if self._actions['esc']:
+            self.exit_state()
         if self._actions['mouse_left']:
             if self.CONTINUE.check_for_hover(pygame.mouse.get_pos()):
                 self.exit_state()

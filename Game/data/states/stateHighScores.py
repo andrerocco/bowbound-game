@@ -8,7 +8,7 @@ from utility.classeScoreController import ScoreController
 
 class HighScores(State):
     def __init__(self, game, level_name, background_surface: pygame.Surface):
-        ACTIONS = {'mouse_left': False}
+        ACTIONS = {'mouse_left': False, 'esc': False}
 
         super().__init__(game, ACTIONS)
 
@@ -38,12 +38,20 @@ class HighScores(State):
             self.RECORDES.append(TextButton(self.__assets.fonts_path['text'], 50, (255, 255, 255), str(scores[rank][1])))
 
     def update_actions(self, event):
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_ESCAPE:
+                self._actions['esc'] = True
+        if event.type == pygame.KEYUP:
+            if event.key == pygame.K_ESCAPE:
+                self._actions['esc'] = False
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
             self._actions['mouse_left'] = True
         if event.type == pygame.MOUSEBUTTONUP and event.button == 1:
             self._actions['mouse_left'] = False
 
     def update(self, delta_time):
+        if self._actions['esc']:
+            self.exit_state()
         if self._actions['mouse_left']:
             if self.VOLTAR.check_for_hover(pygame.mouse.get_pos()):
                 self.exit_state()
