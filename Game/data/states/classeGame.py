@@ -3,7 +3,7 @@ import os, time, pygame
 from singletons.singletonAssets import Assets
 from states.abstractState import State
 
-from states.stateTitleScreen import TitleScreen
+from utility.staticLevelUtility import Framerate
 from states.stateInputName import InputName
 
 
@@ -25,7 +25,7 @@ class Game():
 
         # Configurações do jogo
         self.__running, self.__playing = True, True
-        self.__dt, self.__prev_time = 0, 0
+        self.__prev_time = 0
         self.__clock = pygame.time.Clock()
         self.__state_stack = []
 
@@ -49,7 +49,7 @@ class Game():
             self.__get_events()
             self.__update()
             self.__render()
-            self.__get_dt()
+            self.__set_dt()
             
             self.__clock.tick(60) # Limita o FPS
 
@@ -81,16 +81,16 @@ class Game():
         self.__state_stack[-1].update_actions(event)
 
     def __update(self):
-        self.__state_stack[-1].update(self.__dt)
+        self.__state_stack[-1].update()
 
     def __render(self):
         self.__state_stack[-1].render(self.__display_surface) # Renderiza a state atual
         self.__screen.blit(self.__display_surface, (0, 0))
         pygame.display.flip()
 
-    def __get_dt(self):
+    def __set_dt(self):
         now = time.time()
-        self.__dt = now - self.__prev_time
+        Framerate.set_dt(now - self.__prev_time) # Define o dt para ser usado globalmente
         self.__prev_time = now
 
     def __screen_resize(self):
