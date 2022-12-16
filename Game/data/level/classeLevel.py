@@ -2,7 +2,7 @@ import pygame
 import config
 from time import time
 
-from utility.staticLevelUtility import LevelMouse
+from context.staticLevelContext import LevelMouse
 from utility.classeTimer import Timer
 from level.classePlayer import Player
 from level.arrows.classePiercingArrow import PiercingArrow
