@@ -40,7 +40,7 @@ class InputName(State):
         
         self.INPUT_BOX.update_actions(event)
 
-    def update(self):
+    def update(self, delta_time):
         if self._actions['enter'] and self.__verificador:
             self.__assets.user_name = str(self.INPUT_BOX.text).upper() # Salva o nome do usuário (em all caps)
             TitleScreen(self._game).enter_state()

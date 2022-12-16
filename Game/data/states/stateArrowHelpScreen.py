@@ -41,7 +41,7 @@ class ArrowHelp(State):
             if event.key == pygame.K_ESCAPE:
                 self._actions['esc'] = False
 
-    def update(self):
+    def update(self, delta_time):
         if self._actions['mouse_left']:
             if self.VOLTAR.check_for_hover(pygame.mouse.get_pos()):
                 self.exit_state()

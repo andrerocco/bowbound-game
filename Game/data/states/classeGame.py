@@ -3,7 +3,6 @@ import os, time, pygame
 from singletons.singletonAssets import Assets
 from states.abstractState import State
 
-from utility.staticLevelUtility import Framerate
 from states.stateInputName import InputName
 
 
@@ -25,7 +24,7 @@ class Game():
 
         # Configurações do jogo
         self.__running, self.__playing = True, True
-        self.__prev_time = 0
+        self.__dt, self.__prev_time = 0, 0
         self.__clock = pygame.time.Clock()
         self.__state_stack = []
 
@@ -81,7 +80,7 @@ class Game():
         self.__state_stack[-1].update_actions(event)
 
     def __update(self):
-        self.__state_stack[-1].update()
+        self.__state_stack[-1].update(self.__dt)
 
     def __render(self):
         self.__state_stack[-1].render(self.__display_surface) # Renderiza a state atual
@@ -90,7 +89,7 @@ class Game():
 
     def __set_dt(self):
         now = time.time()
-        Framerate.set_dt(now - self.__prev_time) # Define o dt para ser usado globalmente
+        self.__dt = now - self.__prev_time # Define o dt para ser usado globalmente
         self.__prev_time = now
 
     def __screen_resize(self):

@@ -71,7 +71,7 @@ class LevelSelector(State):
             if self.__allow_scroll and self.__scroll > -self.__max_scroll:
                 self.__scroll -= self.__amount_per_scroll
     
-    def update(self):
+    def update(self, delta_time):
         # Atualiza o máximo de scroll caso haja mudanças no tamanho da tela
         self.__max_scroll = (len(self.__levels_list)+1) * self.__list_gap - self._game.screen_height + self.__margin_top
 

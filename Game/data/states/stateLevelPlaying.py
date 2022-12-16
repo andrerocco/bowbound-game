@@ -88,7 +88,7 @@ class LevelPlaying(State):
             if event.button == 3:
                 self._actions['mouse_right'] = False
 
-    def update(self):
+    def update(self, delta_time):
         # Despausa o timer se estiver pausado
         if self.__timer_paused_status:
             self.__timer_paused_status = False

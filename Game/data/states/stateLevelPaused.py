@@ -41,7 +41,7 @@ class LevelPaused(State):
             if event.button == 1:
                 self._actions['mouse_left'] = False        
 
-    def update(self):
+    def update(self, delta_time):
         if self._actions['esc']:
             self.exit_state()
         if self._actions['mouse_left']:
