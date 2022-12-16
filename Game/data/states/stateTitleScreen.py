@@ -33,7 +33,7 @@ class TitleScreen(State):
         if event.type == pygame.MOUSEBUTTONUP and event.button == 1:
             self._actions['mouse_left'] = False
 
-    def update(self, delta_time):
+    def update(self):
         if self._actions['mouse_left']:
             if self.DEFAULT_LEVELS.check_for_hover(pygame.mouse.get_pos()):
                 LevelSelector(self._game, self.__assets.jsons['default-levels']).enter_state()
