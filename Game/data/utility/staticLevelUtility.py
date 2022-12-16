@@ -24,3 +24,14 @@ class LevelMouse:
                 (screen_dimensions[0] - level_dimensions[0]) // 2,
                 (screen_dimensions[1] - level_dimensions[1]) // 2
             )
+
+class Framerate:
+    __delta_time: 0
+
+    @staticmethod
+    def get_dt():
+        return Framerate.__delta_time
+
+    @staticmethod
+    def set_dt(dt):
+        Framerate.__delta_time = dt
