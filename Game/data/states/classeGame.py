@@ -3,7 +3,7 @@ import os, time, pygame
 from singletons.singletonAssets import Assets
 from states.abstractState import State
 
-from utility.staticLevelMouse import Framerate
+from utility.staticLevelUtility import Framerate
 from states.stateInputName import InputName
 
 

@@ -4,7 +4,7 @@ from states.abstractState import State
 from singletons.singletonAssets import Assets
 import config
 
-from utility.staticLevelMouse import LevelMouse
+from utility.staticLevelUtility import LevelMouse
 from utility.classeScoreController import ScoreController
 from utility.classeTimer import Timer
 from utility.interface.classeTextButton import TextButton
