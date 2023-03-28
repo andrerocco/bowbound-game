@@ -4,10 +4,8 @@ _Read this in other languages: [English](./README.md), [Português (Brasil)](./R
 
 Bowbound é um jogo de plataforma 2D construído com PyGame que testa sua agilidade, mira e solução de problemas. Controle um arqueiro e, utilizando sua besta e diferentes flechas, acerte em todos os alvos do nível para conseguir utilizar a porta de saída do nível. Cada nível possui um número de flechas limitado e diferentes tipos de flechas se comportam de maneiras diferentes, portanto, use-as com sabedoria!
 
-Demonstração do jogo:
-[![Bowbound - Demo Gameplay] // Title
-(https://i.ibb.co/4NmXSgG/maxresdefault.jpg)] // Thumbnail
-(https://www.youtube.com/watch?v=VmcU-zHWFkY "Bowbound - Demo Gameplay") // Video Link
+Assista a um vídeo de demonstração do jogo através do link abaixo:
+[![Bowbound - Demo Gameplay](https://i.ibb.co/4NmXSgG/maxresdefault.jpg)](https://www.youtube.com/watch?v=VmcU-zHWFkY "Bowbound - Demo Gameplay")
 
 O jogo foi construído como o projeto final da disciplina de Programação Orientada a Objetos II (INE5404) ministrada pelos professores [Jônata Tyska](https://www.linkedin.com/in/jonata-tyska-phd/) e [Mateus Grellert](https://www.linkedin.com/in/mateus-grellert-29503356/) do curso de Ciência da Computação da Universidade Federal de Santa Catarina (UFSC).
 
