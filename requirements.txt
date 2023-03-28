@@ -1,0 +1,2 @@
+pyexcel_ods==0.6.0
+pygame==2.3.0
