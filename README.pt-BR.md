@@ -9,6 +9,8 @@ Assista a um vídeo de demonstração do jogo através do link abaixo:
 
 O jogo foi construído como o projeto final da disciplina de Programação Orientada a Objetos II (INE5404) ministrada pelos professores [Jônata Tyska](https://www.linkedin.com/in/jonata-tyska-phd/) e [Mateus Grellert](https://www.linkedin.com/in/mateus-grellert-29503356/) do curso de Ciência da Computação da Universidade Federal de Santa Catarina (UFSC).
 
+Internamente, o jogo foi desenvolvido com base nos conceitos da Orientação a Objetos. Diferentes padrões de projeto (como Singleton, Data Access Object, States) foram implementados na sua construção, o que, em conjunto com o uso da Orientação a Objetos, promove a reutilização de código e a manutenibilidade do projeto. Veja mais sobre detalhes de implementação no [relatório de desenvolvimento](./UML/Relat%C3%B3rio%20de%20Desenvolvimento.pdf). Veja o diagrama de classes do projeto em [UML](./UML/Diagrama%20de%20Classes.pdf).
+
 ## Como executar o jogo
 
 Para executar o jogo, você precisa ter o Python 3.6 ou superior instalado em sua máquina. Você pode baixar o Python [aqui](https://www.python.org/downloads/). Após a instalação, siga os seguintes passos:

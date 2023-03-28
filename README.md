@@ -9,6 +9,8 @@ Watch a video demo gameplay of the game bellow:
 
 The game was built as the final project of the Object Oriented Programming II (INE5404) course taught by professors [Jônata Tyska](https://www.linkedin.com/in/jonata-tyska-phd/) and [Mateus Grellert](https://www.linkedin.com/in/mateus-grellert-29503356/) of the Computer Science major at the Universidade Federal de Santa Catarina (UFSC).
 
+Internally, the Bowbound was developed based on Object-Oriented concepts. It also implements different design patterns (such as Singleton, Data Access Object, States), which, combined with OOP, promotes code reusability and project maintainability. See more about implementation details in the [development report](./UML/Relat%C3%B3rio%20de%20Desenvolvimento.pdf). See the project class diagram in [UML](./UML/Diagrama%20de%20Classes.pdf).
+
 ## How to run the game
 
 To run the game, you need to have Python 3.6 or higher installed on your machine. You can download Python [here](https://www.python.org/downloads/). After installation, follow the steps below:
